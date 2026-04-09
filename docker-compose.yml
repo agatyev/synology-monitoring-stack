@@ -79,7 +79,7 @@ services:
   # Grafana Alloy in the future. Promtail still works but won't
   # receive new features or bug fixes.
   promtail:
-    image: grafana/promtail:3.7.1
+    image: grafana/promtail:3.6.10
     container_name: promtail
     restart: unless-stopped
     command: -config.file=/etc/promtail/promtail.yml
