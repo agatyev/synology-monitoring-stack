@@ -12,7 +12,7 @@ scrape_configs:
       - targets: ["snmp-exporter:9116"]
 
   - job_name: "synology-snmp"
-    scrape_interval: 60s
+    scrape_interval: 30s
     static_configs:
       - targets: ["192.168.1.150"]
         labels:
