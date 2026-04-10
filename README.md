@@ -27,7 +27,7 @@ GF_ADMIN_PASSWORD=your_password
 
 ### 2. NAS IP address
 
-The current target in [prometheus/prometheus.yml](/home/kali/synology-monitoring-stack/prometheus/prometheus.yml#L12) is:
+The current target in [prometheus/prometheus.yml](prometheus/prometheus.yml) is:
 
 ```yaml
       - targets: ["192.168.1.150"]
@@ -43,7 +43,7 @@ In DSM:
 2. Enable `SNMPv1, SNMPv2c service`
 3. Community: `public`
 
-If your community string is not `public`, update it in [snmp_exporter/snmp.yml](/home/kali/synology-monitoring-stack/snmp_exporter/snmp.yml#L1) under `public_v2`.
+If your community string is not `public`, update it in [snmp_exporter/snmp.yml](snmp_exporter/snmp.yml) under `public_v2`.
 
 ## Start
 
