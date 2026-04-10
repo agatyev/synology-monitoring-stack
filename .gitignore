@@ -1,20 +1,10 @@
 .env
+.codex
 
-# Persistent data (TSDB, Loki chunks, Grafana DB) — не коммитим содержимое,
-# но каталоги data/*/ нужны для bind mount на Synology (иначе Docker: Bind mount failed).
 data/*
 !data/prometheus/
-!data/loki/
 !data/grafana/
-!data/alertmanager/
-!data/promtail/
 data/prometheus/*
 !data/prometheus/.gitkeep
-data/loki/*
-!data/loki/.gitkeep
 data/grafana/*
 !data/grafana/.gitkeep
-data/alertmanager/*
-!data/alertmanager/.gitkeep
-data/promtail/*
-!data/promtail/.gitkeep

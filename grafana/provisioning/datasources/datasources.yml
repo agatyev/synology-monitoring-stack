@@ -8,19 +8,3 @@ datasources:
     uid: prometheus
     isDefault: true
     editable: false
-
-  - name: Loki
-    type: loki
-    access: proxy
-    url: http://loki:3100
-    uid: loki
-    editable: false
-
-  - name: Alertmanager
-    type: alertmanager
-    access: proxy
-    url: http://alertmanager:9093
-    uid: alertmanager
-    jsonData:
-      implementation: prometheus
-    editable: false
