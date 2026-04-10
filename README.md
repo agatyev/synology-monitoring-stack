@@ -121,9 +121,13 @@ synology-monitoring-stack/
 
 Если будешь запускать через Synology Container Manager:
 
-1. Скопировать проект в папку вроде `/volume1/docker/monitoring`
+1. Скопировать проект в папку `/volume1/docker/monitoring`
 2. Убедиться, что существуют:
    `data/prometheus`
    `data/grafana`
 3. Создать Project из существующего `docker-compose.yml`
 4. Запустить проект
+
+Если в DSM включен Firewall:
+
+- разрешить `Grafana` в правилах Firewall, чтобы открывался порт `3000`
