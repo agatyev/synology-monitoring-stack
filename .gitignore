@@ -1,9 +1,6 @@
 .env
 .codex
 
-data/*
-!data/prometheus/
-!data/grafana/
 data/prometheus/*
 !data/prometheus/.gitkeep
 data/grafana/*
