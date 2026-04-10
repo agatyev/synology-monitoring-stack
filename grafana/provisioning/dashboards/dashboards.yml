@@ -1,9 +1,9 @@
 apiVersion: 1
 
 providers:
-  - name: "Synology Monitoring"
+  - name: "Monitoring"
     orgId: 1
-    folder: "Synology"
+    folder: "Monitoring"
     type: file
     disableDeletion: false
     editable: true

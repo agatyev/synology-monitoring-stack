@@ -11,6 +11,37 @@ services:
     networks:
       - monitoring
 
+  node-exporter:
+    image: prom/node-exporter:v1.11.1
+    container_name: node-exporter
+    restart: unless-stopped
+    pid: "host"
+    command:
+      - "--path.rootfs=/host"
+      - "--collector.processes"
+      - "--collector.filesystem.mount-points-exclude=^/(dev|proc|sys|run|var/lib/docker/.+)($|/)"
+    volumes:
+      - /:/host:ro
+    networks:
+      - monitoring
+
+  process-exporter:
+    image: ncabatoff/process-exporter:v0.8.7
+    container_name: process-exporter
+    restart: unless-stopped
+    user: "0"
+    pid: "host"
+    privileged: true
+    command:
+      - "--procfs=/host/proc"
+      - "--config.path=/etc/process-exporter/config.yml"
+      - "--threads=false"
+    volumes:
+      - /proc:/host/proc:ro
+      - ./process_exporter/config.yml:/etc/process-exporter/config.yml:ro
+    networks:
+      - monitoring
+
   prometheus:
     image: prom/prometheus:v3.10.0
     container_name: prometheus
@@ -30,6 +61,8 @@ services:
       - monitoring
     depends_on:
       - snmp-exporter
+      - node-exporter
+      - process-exporter
 
   grafana:
     image: grafana/grafana:12.4.2

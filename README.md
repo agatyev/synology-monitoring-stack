@@ -3,6 +3,8 @@
 A minimal working stack for monitoring a Synology NAS:
 
 - `snmp-exporter`
+- `node-exporter`
+- `process-exporter`
 - `prometheus`
 - `grafana`
 - dashboard `14284` "Synology NAS Details"
@@ -10,6 +12,8 @@ A minimal working stack for monitoring a Synology NAS:
 The stack works like this:
 
 `NAS -> SNMP -> snmp-exporter -> Prometheus -> Grafana`
+
+`host /proc + /sys -> node-exporter + process-exporter -> Prometheus -> Grafana`
 
 ## What to configure before startup
 
@@ -70,10 +74,14 @@ Datasource:
 Dashboard:
 
 - `Synology NAS Details`
+- `Node Exporter Full`
+- `Named processes`
 
 This is the official Grafana Labs community dashboard:
 
 - [14284 Synology NAS Details](https://grafana.com/grafana/dashboards/14284-synology-nas-details/)
+- [1860 Node Exporter Full](https://grafana.com/grafana/dashboards/1860-node-exporter-full/)
+- [249 Named processes](https://grafana.com/grafana/dashboards/249-named-processes/)
 
 ## Validation
 
@@ -85,6 +93,8 @@ Expected `UP` targets:
 
 - `prometheus`
 - `snmp-exporter`
+- `node`
+- `process-exporter`
 - `synology-snmp`
 
 If `synology-snmp` is `DOWN`, check:
@@ -102,10 +112,14 @@ synology-monitoring-stack/
 ├── .env.example
 ├── prometheus/
 │   └── prometheus.yml
+├── process_exporter/
+│   └── config.yml
 ├── snmp_exporter/
 │   └── snmp.yml
 ├── grafana/
 │   ├── dashboards/
+│   │   ├── named-processes.json
+│   │   ├── node-exporter-full.json
 │   │   └── synology-nas-details.json
 │   └── provisioning/
 │       ├── dashboards/

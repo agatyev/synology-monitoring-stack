@@ -1,0 +1,73 @@
+process_names:
+  - name: "prometheus"
+    exe:
+      - prometheus
+
+  - name: "grafana"
+    exe:
+      - grafana
+      - grafana-server
+
+  - name: "snmp-exporter"
+    exe:
+      - snmp_exporter
+      - snmp-exporter
+
+  - name: "node-exporter"
+    exe:
+      - node_exporter
+      - node-exporter
+
+  - name: "process-exporter"
+    exe:
+      - process-exporter
+      - process_exporter
+
+  - name: "dockerd"
+    exe:
+      - dockerd
+
+  - name: "containerd"
+    exe:
+      - containerd
+
+  - name: "containerd-shim"
+    comm:
+      - containerd-shim
+      - containerd-shim-runc-v2
+
+  - name: "sshd"
+    comm:
+      - sshd
+
+  - name: "nginx"
+    comm:
+      - nginx
+
+  - name: "postgres"
+    exe:
+      - postgres
+
+  - name: "python:{{.Matches.script}}"
+    exe:
+      - python
+      - python3
+    cmdline:
+      - '(?P<script>[^/\s]+\.py)'
+
+  - name: "node:{{.Matches.app}}"
+    exe:
+      - node
+      - nodejs
+    cmdline:
+      - '(?P<app>[^/\s]+\.js)'
+
+  - name: "java:{{.Matches.jar}}"
+    exe:
+      - java
+    cmdline:
+      - '-jar\s+(?P<jar>[^/\s]+\.jar)'
+
+  - name: "{{.ExeBase}}"
+    cmdline:
+      - '.+'
