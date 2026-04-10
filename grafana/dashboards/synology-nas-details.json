@@ -217,7 +217,7 @@
               },
               {
                 "id": "unit",
-                "value": "fahrenheit"
+                "value": "celsius"
               },
               {
                 "id": "custom.cellOptions",
@@ -228,7 +228,7 @@
               },
               {
                 "id": "max",
-                "value": 140
+                "value": 60
               },
               {
                 "id": "color",
@@ -247,11 +247,11 @@
                     },
                     {
                       "color": "yellow",
-                      "value": 100
+                      "value": 40
                     },
                     {
                       "color": "dark-red",
-                      "value": 135
+                      "value": 55
                     }
                   ]
                 }
@@ -436,7 +436,7 @@
             "uid": "prometheus"
           },
           "exemplar": true,
-          "expr": "(temperature{job=~'$JobName',instance=~'$Device'}*9/5)+32",
+          "expr": "temperature{job=~'$JobName',instance=~'$Device'}",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -4119,11 +4119,11 @@
               },
               {
                 "id": "max",
-                "value": 140
+                "value": 60
               },
               {
                 "id": "unit",
-                "value": "fahrenheit"
+                "value": "celsius"
               }
             ]
           },
@@ -4255,7 +4255,7 @@
             "uid": "prometheus"
           },
           "exemplar": true,
-          "expr": "(diskTemperature{job=~'$JobName',instance=~'$Device'}*9/5)+32",
+          "expr": "diskTemperature{job=~'$JobName',instance=~'$Device'}",
           "format": "table",
           "instant": true,
           "interval": "",
