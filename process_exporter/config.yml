@@ -1,0 +1,235 @@
+process_names:
+  # Monitoring stack
+  - name: "monitoring/prometheus"
+    exe:
+      - prometheus
+
+  - name: "monitoring/grafana"
+    exe:
+      - grafana
+      - grafana-server
+
+  - name: "monitoring/snmp-exporter"
+    exe:
+      - snmp_exporter
+      - snmp-exporter
+
+  - name: "monitoring/process-exporter"
+    exe:
+      - process-exporter
+      - process_exporter
+
+  # Container runtime
+  - name: "docker/runtime"
+    exe:
+      - dockerd
+      - containerd
+
+  - name: "docker/shim"
+    exe:
+      - containerd-shim
+      - containerd-shim-runc-v2
+
+  # DSM / Synology services
+  - name: "synology/storage"
+    comm:
+      - synostoraged
+      - scemd
+      - synoraid
+      - synocached
+
+  - name: "synology/storage"
+    exe:
+      - synospaceoperation
+      - syno_disk_health_record_updater
+
+  - name: "synology/web"
+    comm:
+      - nginx
+      - synoscgi
+      - synocgid
+      - php-fpm
+      - php74-fpm
+      - php80-fpm
+      - php81-fpm
+      - php82-fpm
+
+  - name: "synology/indexing"
+    comm:
+      - synoindexd
+      - synomkthumbd
+      - ffmpeg
+      - convert
+
+  - name: "synology/drive"
+    comm:
+      - synologydrive
+      - synodrive
+      - cloud-authd
+      - cloud-vmtouchd
+      - cloud-workerd
+      - syno-cloud-clientd
+
+  - name: "synology/drive"
+    cmdline:
+      - '(?i)(SynologyDrive|@synologydrive)'
+
+  - name: "synology/photos"
+    comm:
+      - synofoto-.*
+      - synophoto-.*
+
+  - name: "synology/photos"
+    cmdline:
+      - '(?i)(SynologyPhotos|PhotoStation|synofoto|synophoto)'
+
+  - name: "synology/chat"
+    comm:
+      - synochatd
+
+  # NAS services
+  - name: "files/sharing"
+    comm:
+      - smbd
+      - nmbd
+      - winbindd
+      - afpd
+      - nfsd
+      - rpc.mountd
+      - rpcbind
+      - rpc.statd
+      - rpc.idmapd
+
+  - name: "system/ssh"
+    comm:
+      - sshd
+
+  - name: "system/logging"
+    comm:
+      - syslog-ng
+      - syslogd
+      - rsyslogd
+      - synologrotated
+      - ssrotated
+
+  - name: "system/scheduler"
+    comm:
+      - crond
+      - cron
+      - synocrond
+
+  - name: "system/core"
+    comm:
+      - init
+      - systemd
+      - systemd-journald
+      - dbus-daemon
+      - udevd
+      - agetty
+
+  - name: "network/tailscale"
+    comm:
+      - tailscaled
+
+  - name: "network/tailscale"
+    cmdline:
+      - '(?i)tailscaled'
+
+  - name: "network/mdns"
+    comm:
+      - avahi-daemon
+
+  - name: "power/ups"
+    comm:
+      - upsmon
+      - upsd
+
+  # Databases and caches
+  - name: "database/postgres"
+    exe:
+      - postgres
+
+  - name: "database/mysql"
+    exe:
+      - mysqld
+      - mariadbd
+
+  - name: "database/redis"
+    comm:
+      - redis-server
+
+  - name: "database/valkey"
+    comm:
+      - valkey-server
+      - valkey-rdb-bgsave
+
+  - name: "database/pgbouncer"
+    comm:
+      - pgbouncer
+
+  - name: "database/pgbouncer"
+    cmdline:
+      - '(?i)pgbouncer'
+
+  # Common apps
+  - name: "media/immich"
+    comm:
+      - immich
+      - immich-api
+      - immich-microservices
+      - immich-machine-learning
+
+  - name: "media/immich"
+    cmdline:
+      - '(?i)immich'
+
+  - name: "media/plex"
+    exe:
+      - Plex Media Server
+      - Plex Tuner Service
+
+  - name: "media/jellyfin"
+    comm:
+      - jellyfin
+
+  - name: "media/emby"
+    comm:
+      - emby-server
+
+  - name: "download/qbittorrent"
+    comm:
+      - qbittorrent-nox
+
+  - name: "download/transmission"
+    comm:
+      - transmission-da
+
+  - name: "download/aria2"
+    comm:
+      - aria2c
+
+  # Runtimes
+  - name: "python:{{.Matches.script}}"
+    exe:
+      - python
+      - python3
+    cmdline:
+      - '(?:^|\s)(?P<script>[A-Za-z0-9_.-]+\.py)(?:\s|$)'
+
+  - name: "node:{{.Matches.app}}"
+    exe:
+      - node
+      - nodejs
+    cmdline:
+      - '(?:^|\s)(?P<app>[A-Za-z0-9_.-]+\.js)(?:\s|$)'
+
+  - name: "java:{{.Matches.jar}}"
+    exe:
+      - java
+    cmdline:
+      - '-jar\s+(?P<jar>[A-Za-z0-9_.-]+\.jar)(?:\s|$)'
+
+  # Fallback
+  - name: "app/{{.Comm}}"
+    comm:
+      - '[A-Za-z0-9_.@:+-]+'

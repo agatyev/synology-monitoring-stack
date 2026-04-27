@@ -1,0 +1,6 @@
+.env
+
+data/prometheus/*
+!data/prometheus/.gitkeep
+data/grafana/*
+!data/grafana/.gitkeep
