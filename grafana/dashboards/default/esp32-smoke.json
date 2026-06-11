@@ -232,11 +232,38 @@
       "gridPos": { "h": 1, "w": 24, "x": 0, "y": 32 }, "id": 102
     },
     {
+      "id": 16,
+      "title": "Wi-Fi сигнал",
+      "type": "stat",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 5, "w": 4, "x": 0, "y": 33 },
+      "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "center", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "value" },
+      "fieldConfig": { "defaults": {
+        "unit": "dBm", "decimals": 0,
+        "thresholds": { "mode": "absolute", "steps": [
+          { "color": "red", "value": null },
+          { "color": "yellow", "value": -75 },
+          { "color": "green", "value": -67 }
+        ] }
+      } },
+      "targets": [ { "refId": "A", "datasource": { "type": "prometheus", "uid": "prometheus" }, "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"wifi_signal\"}" } ]
+    },
+    {
+      "id": 17,
+      "title": "Аптайм",
+      "type": "stat",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 5, "w": 4, "x": 4, "y": 33 },
+      "options": { "colorMode": "none", "graphMode": "none", "justifyMode": "center", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "value" },
+      "fieldConfig": { "defaults": { "unit": "s", "decimals": 0 } },
+      "targets": [ { "refId": "A", "datasource": { "type": "prometheus", "uid": "prometheus" }, "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"uptime\"}" } ]
+    },
+    {
       "id": 20,
       "title": "История онлайн / офлайн",
       "type": "state-timeline",
       "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "gridPos": { "h": 5, "w": 24, "x": 0, "y": 33 },
+      "gridPos": { "h": 5, "w": 16, "x": 8, "y": 33 },
       "options": {
         "mergeValues": true,
         "showValue": "never",
@@ -257,6 +284,24 @@
         ] }
       } },
       "targets": [ { "refId": "A", "datasource": { "type": "prometheus", "uid": "prometheus" }, "expr": "up{job=\"esp32-smoke\"}", "legendFormat": "Связь" } ]
+    },
+    {
+      "id": 21,
+      "title": "Wi-Fi сигнал · история (dBm) · норма выше −67",
+      "type": "timeseries",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 7, "w": 24, "x": 0, "y": 38 },
+      "fieldConfig": { "defaults": {
+        "unit": "dBm",
+        "color": { "mode": "thresholds", "seriesBy": "last" },
+        "custom": { "lineWidth": 2, "lineInterpolation": "smooth", "fillOpacity": 20, "gradientMode": "opacity", "spanNulls": 60000, "thresholdsStyle": { "mode": "dashed" } },
+        "thresholds": { "mode": "absolute", "steps": [
+          { "color": "red", "value": null },
+          { "color": "yellow", "value": -75 },
+          { "color": "green", "value": -67 }
+        ] }
+      } },
+      "targets": [ { "refId": "A", "datasource": { "type": "prometheus", "uid": "prometheus" }, "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"wifi_signal\"}", "legendFormat": "RSSI" } ]
     }
   ]
 }
