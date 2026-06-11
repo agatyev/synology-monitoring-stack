@@ -24,7 +24,18 @@
       "type": "timeseries",
       "datasource": { "type": "prometheus", "uid": "prometheus" },
       "gridPos": { "h": 8, "w": 12, "x": 0, "y": 1 },
-      "fieldConfig": { "defaults": { "unit": "ppb", "custom": { "fillOpacity": 15, "lineWidth": 2 } } },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ppb",
+          "color": { "mode": "thresholds" },
+          "custom": { "fillOpacity": 12, "lineWidth": 2, "thresholdsStyle": { "mode": "dashed" } },
+          "thresholds": { "mode": "absolute", "steps": [
+            { "color": "green", "value": null },
+            { "color": "yellow", "value": 250 },
+            { "color": "red", "value": 1000 }
+          ] }
+        }
+      },
       "targets": [
         { "refId": "A", "datasource": { "type": "prometheus", "uid": "prometheus" },
           "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"}", "legendFormat": "TVOC" }
@@ -36,7 +47,18 @@
       "type": "timeseries",
       "datasource": { "type": "prometheus", "uid": "prometheus" },
       "gridPos": { "h": 8, "w": 12, "x": 12, "y": 1 },
-      "fieldConfig": { "defaults": { "unit": "ppm", "custom": { "fillOpacity": 15, "lineWidth": 2 } } },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ppm",
+          "color": { "mode": "thresholds" },
+          "custom": { "fillOpacity": 12, "lineWidth": 2, "thresholdsStyle": { "mode": "dashed" } },
+          "thresholds": { "mode": "absolute", "steps": [
+            { "color": "green", "value": null },
+            { "color": "yellow", "value": 800 },
+            { "color": "red", "value": 2000 }
+          ] }
+        }
+      },
       "targets": [
         { "refId": "A", "datasource": { "type": "prometheus", "uid": "prometheus" },
           "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_eco2\"}", "legendFormat": "eCO2" }
@@ -55,7 +77,19 @@
       "type": "timeseries",
       "datasource": { "type": "prometheus", "uid": "prometheus" },
       "gridPos": { "h": 8, "w": 12, "x": 0, "y": 10 },
-      "fieldConfig": { "defaults": { "unit": "celsius", "custom": { "fillOpacity": 10, "lineWidth": 2 } } },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "celsius",
+          "color": { "mode": "thresholds" },
+          "custom": { "fillOpacity": 10, "lineWidth": 2, "thresholdsStyle": { "mode": "dashed" } },
+          "thresholds": { "mode": "absolute", "steps": [
+            { "color": "blue", "value": null },
+            { "color": "green", "value": 19 },
+            { "color": "yellow", "value": 27 },
+            { "color": "red", "value": 30 }
+          ] }
+        }
+      },
       "targets": [
         { "refId": "A", "datasource": { "type": "prometheus", "uid": "prometheus" },
           "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_temperature\"}", "legendFormat": "Temp" }
@@ -67,7 +101,19 @@
       "type": "timeseries",
       "datasource": { "type": "prometheus", "uid": "prometheus" },
       "gridPos": { "h": 8, "w": 12, "x": 12, "y": 10 },
-      "fieldConfig": { "defaults": { "unit": "humidity", "custom": { "fillOpacity": 10, "lineWidth": 2 } } },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "humidity",
+          "color": { "mode": "thresholds" },
+          "custom": { "fillOpacity": 10, "lineWidth": 2, "thresholdsStyle": { "mode": "dashed" } },
+          "thresholds": { "mode": "absolute", "steps": [
+            { "color": "orange", "value": null },
+            { "color": "green", "value": 40 },
+            { "color": "yellow", "value": 60 },
+            { "color": "red", "value": 70 }
+          ] }
+        }
+      },
       "targets": [
         { "refId": "A", "datasource": { "type": "prometheus", "uid": "prometheus" },
           "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_humidity\"}", "legendFormat": "Humidity" }
@@ -91,7 +137,18 @@
       "type": "timeseries",
       "datasource": { "type": "prometheus", "uid": "prometheus" },
       "gridPos": { "h": 8, "w": 12, "x": 12, "y": 18 },
-      "fieldConfig": { "defaults": { "unit": "ohm", "custom": { "fillOpacity": 10, "lineWidth": 2 } } },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ohm",
+          "color": { "mode": "thresholds" },
+          "custom": { "fillOpacity": 10, "lineWidth": 2, "thresholdsStyle": { "mode": "dashed" } },
+          "thresholds": { "mode": "absolute", "steps": [
+            { "color": "red", "value": null },
+            { "color": "yellow", "value": 15000 },
+            { "color": "green", "value": 30000 }
+          ] }
+        }
+      },
       "targets": [
         { "refId": "A", "datasource": { "type": "prometheus", "uid": "prometheus" },
           "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_gas_resistance\"}", "legendFormat": "Gas" }
