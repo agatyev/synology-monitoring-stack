@@ -15,6 +15,13 @@ scrape_configs:
     static_configs:
       - targets: ["process-exporter:9256"]
 
+  - job_name: "esp32-smoke"
+    scrape_interval: 10s
+    static_configs:
+      - targets: ["192.168.1.49:80"]
+        labels:
+          device: "esp32-smoke"
+
   - job_name: "synology-snmp"
     scrape_interval: 30s
     static_configs:
