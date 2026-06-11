@@ -1,0 +1,101 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "graphTooltip": 1,
+  "refresh": "10s",
+  "schemaVersion": 39,
+  "tags": ["esp32", "esphome", "air-quality"],
+  "templating": { "list": [] },
+  "time": { "from": "now-6h", "to": "now" },
+  "title": "ESP32 Smoke — Air Quality",
+  "uid": "esp32-smoke",
+  "version": 1,
+  "panels": [
+    {
+      "type": "row",
+      "title": "CCS811 — дым и запах (eCO₂ / TVOC)",
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+      "id": 100
+    },
+    {
+      "id": 1,
+      "title": "TVOC — летучие вещества (дым/запах)",
+      "type": "timeseries",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 1 },
+      "fieldConfig": { "defaults": { "unit": "ppb", "custom": { "fillOpacity": 15, "lineWidth": 2 } } },
+      "targets": [
+        { "refId": "A", "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"}", "legendFormat": "TVOC" }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "eCO₂ — углекислый газ",
+      "type": "timeseries",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 1 },
+      "fieldConfig": { "defaults": { "unit": "ppm", "custom": { "fillOpacity": 15, "lineWidth": 2 } } },
+      "targets": [
+        { "refId": "A", "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_eco2\"}", "legendFormat": "eCO2" }
+      ]
+    },
+    {
+      "type": "row",
+      "title": "BME680 — климат и газ (температура / влажность / давление / газ)",
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 9 },
+      "id": 101
+    },
+    {
+      "id": 3,
+      "title": "Температура",
+      "type": "timeseries",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 10 },
+      "fieldConfig": { "defaults": { "unit": "celsius", "custom": { "fillOpacity": 10, "lineWidth": 2 } } },
+      "targets": [
+        { "refId": "A", "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_temperature\"}", "legendFormat": "Temp" }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Влажность",
+      "type": "timeseries",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 10 },
+      "fieldConfig": { "defaults": { "unit": "humidity", "custom": { "fillOpacity": 10, "lineWidth": 2 } } },
+      "targets": [
+        { "refId": "A", "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_humidity\"}", "legendFormat": "Humidity" }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Давление",
+      "type": "timeseries",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 18 },
+      "fieldConfig": { "defaults": { "unit": "pressurehpa", "custom": { "fillOpacity": 10, "lineWidth": 2 } } },
+      "targets": [
+        { "refId": "A", "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_pressure\"}", "legendFormat": "Pressure" }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Сопротивление газа (качество воздуха)",
+      "type": "timeseries",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 18 },
+      "fieldConfig": { "defaults": { "unit": "ohm", "custom": { "fillOpacity": 10, "lineWidth": 2 } } },
+      "targets": [
+        { "refId": "A", "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_gas_resistance\"}", "legendFormat": "Gas" }
+      ]
+    }
+  ]
+}
