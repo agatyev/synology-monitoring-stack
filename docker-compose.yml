@@ -33,7 +33,7 @@ services:
       - "--storage.tsdb.retention.time=${PROMETHEUS_RETENTION:-180d}"
       - "--web.enable-lifecycle"
     volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus:/etc/prometheus:ro
       - ${VOLUME_BASE:-./data}/prometheus:/prometheus
     networks:
       - monitoring
