@@ -85,20 +85,20 @@
     },
     {
       "id": 14,
-      "title": "Газ (Ω)",
+      "title": "Загрязнение (газ)",
       "type": "stat",
       "datasource": { "type": "prometheus", "uid": "prometheus" },
       "gridPos": { "h": 6, "w": 3, "x": 18, "y": 0 },
       "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "center", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "value" },
       "fieldConfig": { "defaults": {
-        "unit": "ohm", "decimals": 0,
+        "unit": "short", "decimals": 0,
         "thresholds": { "mode": "absolute", "steps": [
-          { "color": "red", "value": null },
-          { "color": "yellow", "value": 15000 },
-          { "color": "green", "value": 30000 }
+          { "color": "green", "value": null },
+          { "color": "yellow", "value": 10000 },
+          { "color": "red", "value": 20000 }
         ] }
       } },
-      "targets": [ { "refId": "A", "datasource": { "type": "prometheus", "uid": "prometheus" }, "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_gas_resistance\"}" } ]
+      "targets": [ { "refId": "A", "datasource": { "type": "prometheus", "uid": "prometheus" }, "expr": "clamp_min(45000 - esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_gas_resistance\"}, 0)" } ]
     },
     {
       "id": 15,
@@ -211,21 +211,52 @@
     },
     {
       "id": 6,
-      "title": "Газ (BME680) · относительный, выше = чище",
+      "title": "Загрязнение по газу · вверх = грязнее",
       "type": "timeseries",
       "datasource": { "type": "prometheus", "uid": "prometheus" },
       "gridPos": { "h": 8, "w": 12, "x": 12, "y": 24 },
       "fieldConfig": { "defaults": {
-        "unit": "ohm",
+        "unit": "short", "min": 0,
         "color": { "mode": "thresholds", "seriesBy": "last" },
-        "custom": { "lineWidth": 2, "lineInterpolation": "smooth", "fillOpacity": 20, "gradientMode": "opacity", "spanNulls": 60000, "thresholdsStyle": { "mode": "dashed" } },
+        "custom": { "lineWidth": 2, "lineInterpolation": "smooth", "fillOpacity": 25, "gradientMode": "opacity", "spanNulls": 60000, "thresholdsStyle": { "mode": "dashed" } },
         "thresholds": { "mode": "absolute", "steps": [
-          { "color": "red", "value": null },
-          { "color": "yellow", "value": 15000 },
-          { "color": "green", "value": 30000 }
+          { "color": "green", "value": null },
+          { "color": "yellow", "value": 10000 },
+          { "color": "red", "value": 20000 }
         ] }
       } },
-      "targets": [ { "refId": "A", "datasource": { "type": "prometheus", "uid": "prometheus" }, "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_gas_resistance\"}", "legendFormat": "Gas" } ]
+      "targets": [ { "refId": "A", "datasource": { "type": "prometheus", "uid": "prometheus" }, "expr": "clamp_min(45000 - esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_gas_resistance\"}, 0)", "legendFormat": "Загрязнение" } ]
+    },
+    {
+      "type": "row", "title": "Связь платы", "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 32 }, "id": 102
+    },
+    {
+      "id": 20,
+      "title": "История онлайн / офлайн",
+      "type": "state-timeline",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 5, "w": 24, "x": 0, "y": 33 },
+      "options": {
+        "mergeValues": true,
+        "showValue": "never",
+        "alignValue": "center",
+        "rowHeight": 0.9,
+        "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true }
+      },
+      "fieldConfig": { "defaults": {
+        "color": { "mode": "thresholds" },
+        "custom": { "fillOpacity": 80, "lineWidth": 0 },
+        "mappings": [ { "type": "value", "options": {
+          "0": { "text": "OFFLINE", "color": "red", "index": 0 },
+          "1": { "text": "ONLINE", "color": "green", "index": 1 }
+        } } ],
+        "thresholds": { "mode": "absolute", "steps": [
+          { "color": "red", "value": null },
+          { "color": "green", "value": 1 }
+        ] }
+      } },
+      "targets": [ { "refId": "A", "datasource": { "type": "prometheus", "uid": "prometheus" }, "expr": "up{job=\"esp32-smoke\"}", "legendFormat": "Связь" } ]
     }
   ]
 }
