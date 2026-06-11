@@ -287,14 +287,14 @@
     },
     {
       "id": 21,
-      "title": "Wi-Fi сигнал · история (dBm) · норма выше −67",
+      "title": "Wi-Fi сигнал · история (dBm) · зелёная зона = хороший (>−67)",
       "type": "timeseries",
       "datasource": { "type": "prometheus", "uid": "prometheus" },
       "gridPos": { "h": 7, "w": 24, "x": 0, "y": 38 },
       "fieldConfig": { "defaults": {
-        "unit": "dBm",
+        "unit": "dBm", "min": -90, "max": -30,
         "color": { "mode": "thresholds", "seriesBy": "last" },
-        "custom": { "lineWidth": 2, "lineInterpolation": "smooth", "fillOpacity": 20, "gradientMode": "opacity", "spanNulls": 60000, "thresholdsStyle": { "mode": "dashed" } },
+        "custom": { "lineWidth": 2, "lineInterpolation": "smooth", "fillOpacity": 15, "gradientMode": "none", "spanNulls": 60000, "thresholdsStyle": { "mode": "dashed+area" } },
         "thresholds": { "mode": "absolute", "steps": [
           { "color": "red", "value": null },
           { "color": "yellow", "value": -75 },
