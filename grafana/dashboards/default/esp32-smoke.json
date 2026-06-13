@@ -21,8 +21,160 @@
   "timezone": "browser",
   "title": "ESP32 Smoke — Air Quality",
   "uid": "esp32-smoke",
-  "version": 9,
+  "version": 11,
   "panels": [
+    {
+      "id": 50,
+      "title": "Воздух сейчас",
+      "type": "stat",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "✅  В НОРМЕ",
+                  "color": "green",
+                  "index": 0
+                },
+                "1": {
+                  "text": "⚠  ВНЕ НОРМЫ",
+                  "color": "red",
+                  "index": 1
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          }
+        }
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "textMode": "value",
+        "wideLayout": true,
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "max(\n  (esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_eco2\"} > bool 1000)\n  or (esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"} > bool 150)\n  or (esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_iaq\"} > bool 100)\n  or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"} > bool 12)\n  or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_10_0\"} > bool 54)\n)"
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "title": "Воздух за 24 часа",
+      "type": "stat",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "✅  За сутки без отклонений",
+                  "color": "green",
+                  "index": 0
+                },
+                "1": {
+                  "text": "⚠  За сутки был выход за норму",
+                  "color": "red",
+                  "index": 1
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          }
+        }
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "textMode": "value",
+        "wideLayout": true,
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "max(\n  (max_over_time(esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_eco2\"}[24h]) > bool 1000)\n  or (max_over_time(esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"}[24h]) > bool 150)\n  or (max_over_time(esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_iaq\"}[24h]) > bool 100)\n  or (max_over_time(esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"}[24h]) > bool 12)\n  or (max_over_time(esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_10_0\"}[24h]) > bool 54)\n)"
+        }
+      ]
+    },
     {
       "id": 10,
       "title": "Запахи и химия (VOC)",
@@ -35,7 +187,7 @@
         "h": 6,
         "w": 5,
         "x": 0,
-        "y": 0
+        "y": 4
       },
       "options": {
         "reduceOptions": {
@@ -95,7 +247,7 @@
         "h": 6,
         "w": 5,
         "x": 5,
-        "y": 0
+        "y": 4
       },
       "options": {
         "reduceOptions": {
@@ -155,7 +307,7 @@
         "h": 6,
         "w": 4,
         "x": 10,
-        "y": 0
+        "y": 4
       },
       "options": {
         "colorMode": "value",
@@ -220,7 +372,7 @@
         "h": 6,
         "w": 4,
         "x": 14,
-        "y": 0
+        "y": 4
       },
       "options": {
         "colorMode": "value",
@@ -289,7 +441,7 @@
         "h": 6,
         "w": 3,
         "x": 18,
-        "y": 0
+        "y": 4
       },
       "options": {
         "reduceOptions": {
@@ -355,7 +507,7 @@
         "h": 6,
         "w": 3,
         "x": 21,
-        "y": 0
+        "y": 4
       },
       "options": {
         "colorMode": "background",
@@ -421,7 +573,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 6
+        "y": 10
       },
       "id": 100
     },
@@ -437,7 +589,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 7
+        "y": 11
       },
       "fieldConfig": {
         "defaults": {
@@ -500,7 +652,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 7
+        "y": 11
       },
       "fieldConfig": {
         "defaults": {
@@ -559,7 +711,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 15
+        "y": 19
       },
       "id": 101
     },
@@ -575,7 +727,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 16
+        "y": 20
       },
       "fieldConfig": {
         "defaults": {
@@ -641,7 +793,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 16
+        "y": 20
       },
       "fieldConfig": {
         "defaults": {
@@ -711,7 +863,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 24
+        "y": 28
       },
       "fieldConfig": {
         "defaults": {
@@ -753,7 +905,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 24
+        "y": 28
       },
       "fieldConfig": {
         "defaults": {
@@ -817,7 +969,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 32
+        "y": 36
       },
       "panels": []
     },
@@ -833,7 +985,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 33
+        "y": 37
       },
       "fieldConfig": {
         "defaults": {
@@ -910,7 +1062,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 33
+        "y": 37
       },
       "fieldConfig": {
         "defaults": {
@@ -987,7 +1139,7 @@
         "h": 4,
         "w": 12,
         "x": 0,
-        "y": 41
+        "y": 45
       },
       "fieldConfig": {
         "defaults": {
@@ -1051,7 +1203,7 @@
         "h": 4,
         "w": 12,
         "x": 12,
-        "y": 41
+        "y": 45
       },
       "fieldConfig": {
         "defaults": {
@@ -1111,7 +1263,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 45
+        "y": 49
       },
       "id": 102
     },
@@ -1127,7 +1279,7 @@
         "h": 5,
         "w": 4,
         "x": 0,
-        "y": 46
+        "y": 50
       },
       "options": {
         "colorMode": "value",
@@ -1188,7 +1340,7 @@
         "h": 5,
         "w": 4,
         "x": 4,
-        "y": 46
+        "y": 50
       },
       "options": {
         "colorMode": "none",
@@ -1232,7 +1384,7 @@
         "h": 5,
         "w": 16,
         "x": 8,
-        "y": 46
+        "y": 50
       },
       "options": {
         "mergeValues": true,
@@ -1310,7 +1462,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 51
+        "y": 55
       },
       "fieldConfig": {
         "defaults": {
