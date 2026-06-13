@@ -21,7 +21,7 @@
   "timezone": "browser",
   "title": "ESP32 Smoke — Air Quality",
   "uid": "esp32-smoke",
-  "version": 13,
+  "version": 14,
   "panels": [
     {
       "id": 50,
@@ -33,7 +33,7 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 12,
+        "w": 24,
         "x": 0,
         "y": 0
       },
@@ -100,84 +100,8 @@
       ]
     },
     {
-      "id": 51,
-      "title": "Воздух за 24 часа",
-      "type": "stat",
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 12,
-        "x": 12,
-        "y": 0
-      },
-      "fieldConfig": {
-        "defaults": {
-          "mappings": [
-            {
-              "type": "value",
-              "options": {
-                "0": {
-                  "text": "✅  За сутки чисто",
-                  "color": "green",
-                  "index": 0
-                },
-                "1": {
-                  "text": "🟡  За 24 часа был выход за норму",
-                  "color": "yellow",
-                  "index": 1
-                }
-              }
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 1
-              }
-            ]
-          },
-          "color": {
-            "mode": "thresholds"
-          }
-        }
-      },
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "textMode": "value",
-        "wideLayout": true,
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        }
-      },
-      "targets": [
-        {
-          "refId": "A",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "expr": "max(\n  (max_over_time(esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_eco2\"}[24h]) > bool 1000)\n  or (max_over_time(esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"}[24h]) > bool 150)\n  or (max_over_time(esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_iaq\"}[24h]) > bool 100)\n  or (max_over_time(esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"}[24h]) > bool 12)\n  or (max_over_time(esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_10_0\"}[24h]) > bool 54)\n)"
-        }
-      ]
-    },
-    {
       "id": 52,
-      "title": "Что превышало норму",
+      "title": "Показатели и нормы",
       "type": "table",
       "datasource": {
         "type": "prometheus",
@@ -201,6 +125,16 @@
           "expr": "sum by (name) (esphome_sensor_value{job=\"esp32-smoke\", name=~\"ccs811_eco2|ccs811_tvoc|bme680_iaq|sps30_pm_2_5|sps30_pm_10_0\"})"
         },
         {
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "format": "table",
+          "instant": true,
+          "expr": "sum by (name) ( (esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_eco2\"} >= 0) * 1000 or (esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"} >= 0) * 150 or (esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_iaq\"} >= 0) * 100 or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"} >= 0) * 12 or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_10_0\"} >= 0) * 54 )"
+        },
+        {
           "refId": "C",
           "datasource": {
             "type": "prometheus",
@@ -208,7 +142,7 @@
           },
           "format": "table",
           "instant": true,
-          "expr": "sum by (name) ( max_over_time(esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_eco2\"}[24h]) / 1000 or max_over_time(esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"}[24h]) / 150 or max_over_time(esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_iaq\"}[24h]) / 100 or max_over_time(esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"}[24h]) / 12 or max_over_time(esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_10_0\"}[24h]) / 54 ) * 100"
+          "expr": "sum by (name) ( (esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_eco2\"} > bool 1000) or (esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"} > bool 150) or (esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_iaq\"} > bool 100) or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"} > bool 12) or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_10_0\"} > bool 54) )"
         }
       ],
       "transformations": [
@@ -227,10 +161,17 @@
               "Time 1": true,
               "Time 2": true
             },
+            "indexByName": {
+              "name": 0,
+              "Value #A": 1,
+              "Value #B": 2,
+              "Value #C": 3
+            },
             "renameByName": {
               "name": "Показатель",
               "Value #A": "Сейчас",
-              "Value #C": "% нормы (24ч)"
+              "Value #B": "Норма",
+              "Value #C": "Статус"
             }
           }
         },
@@ -240,7 +181,7 @@
             "fields": {},
             "sort": [
               {
-                "field": "% нормы (24ч)",
+                "field": "Статус",
                 "desc": true
               }
             ]
@@ -250,7 +191,7 @@
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "align": "auto",
+            "align": "left",
             "cellOptions": {
               "type": "auto"
             }
@@ -292,48 +233,10 @@
                     }
                   }
                 ]
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "% нормы (24ч)"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "percent"
               },
               {
-                "id": "decimals",
-                "value": 0
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "type": "color-background"
-                }
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "green",
-                      "value": null
-                    },
-                    {
-                      "color": "yellow",
-                      "value": 80
-                    },
-                    {
-                      "color": "red",
-                      "value": 100
-                    }
-                  ]
-                }
+                "id": "custom.width",
+                "value": 210
               }
             ]
           },
@@ -346,13 +249,111 @@
               {
                 "id": "decimals",
                 "value": 1
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Норма"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "1000": {
+                        "text": "до 1000"
+                      },
+                      "150": {
+                        "text": "до 150"
+                      },
+                      "100": {
+                        "text": "до 100"
+                      },
+                      "12": {
+                        "text": "до 12"
+                      },
+                      "54": {
+                        "text": "до 54"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Статус"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "0": {
+                        "text": "в норме",
+                        "color": "green",
+                        "index": 0
+                      },
+                      "1": {
+                        "text": "превышено",
+                        "color": "red",
+                        "index": 1
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 1
+                    }
+                  ]
+                }
               }
             ]
           }
         ]
       },
       "options": {
-        "showHeader": true
+        "showHeader": true,
+        "footer": {
+          "show": false
+        }
       }
     },
     {
