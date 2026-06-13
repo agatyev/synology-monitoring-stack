@@ -21,7 +21,7 @@
   "timezone": "browser",
   "title": "ESP32 Smoke — Air Quality",
   "uid": "esp32-smoke",
-  "version": 14,
+  "version": 15,
   "panels": [
     {
       "id": 50,
@@ -891,14 +891,13 @@
           "unit": "ppb",
           "min": 0,
           "color": {
-            "mode": "thresholds",
-            "seriesBy": "last"
+            "mode": "thresholds"
           },
           "custom": {
             "lineWidth": 2,
             "lineInterpolation": "smooth",
             "fillOpacity": 25,
-            "gradientMode": "opacity",
+            "gradientMode": "scheme",
             "spanNulls": 60000,
             "thresholdsStyle": {
               "mode": "dashed"
@@ -954,14 +953,13 @@
           "unit": "ppm",
           "min": 400,
           "color": {
-            "mode": "thresholds",
-            "seriesBy": "last"
+            "mode": "thresholds"
           },
           "custom": {
             "lineWidth": 2,
             "lineInterpolation": "smooth",
             "fillOpacity": 25,
-            "gradientMode": "opacity",
+            "gradientMode": "scheme",
             "spanNulls": 60000,
             "thresholdsStyle": {
               "mode": "dashed"
@@ -1028,14 +1026,13 @@
         "defaults": {
           "unit": "celsius",
           "color": {
-            "mode": "thresholds",
-            "seriesBy": "last"
+            "mode": "thresholds"
           },
           "custom": {
             "lineWidth": 2,
             "lineInterpolation": "smooth",
             "fillOpacity": 20,
-            "gradientMode": "opacity",
+            "gradientMode": "scheme",
             "spanNulls": 60000,
             "thresholdsStyle": {
               "mode": "dashed"
@@ -1094,14 +1091,13 @@
         "defaults": {
           "unit": "humidity",
           "color": {
-            "mode": "thresholds",
-            "seriesBy": "last"
+            "mode": "thresholds"
           },
           "custom": {
             "lineWidth": 2,
             "lineInterpolation": "smooth",
             "fillOpacity": 20,
-            "gradientMode": "opacity",
+            "gradientMode": "scheme",
             "spanNulls": 60000,
             "thresholdsStyle": {
               "mode": "dashed"
@@ -1207,8 +1203,7 @@
           "unit": "short",
           "min": 0,
           "color": {
-            "mode": "thresholds",
-            "seriesBy": "last"
+            "mode": "thresholds"
           },
           "custom": {
             "lineWidth": 2,
@@ -1765,14 +1760,13 @@
           "min": -90,
           "max": -30,
           "color": {
-            "mode": "thresholds",
-            "seriesBy": "last"
+            "mode": "thresholds"
           },
           "custom": {
             "lineWidth": 2,
             "lineInterpolation": "smooth",
             "fillOpacity": 15,
-            "gradientMode": "none",
+            "gradientMode": "scheme",
             "spanNulls": 60000,
             "thresholdsStyle": {
               "mode": "dashed+area"
