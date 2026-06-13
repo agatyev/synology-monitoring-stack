@@ -21,7 +21,7 @@
   "timezone": "browser",
   "title": "ESP32 Smoke — Air Quality",
   "uid": "esp32-smoke",
-  "version": 8,
+  "version": 9,
   "panels": [
     {
       "id": 10,
@@ -280,7 +280,7 @@
     {
       "id": 14,
       "title": "Качество воздуха (IAQ)",
-      "type": "stat",
+      "type": "gauge",
       "datasource": {
         "type": "prometheus",
         "uid": "prometheus"
@@ -292,9 +292,6 @@
         "y": 0
       },
       "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "center",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -302,7 +299,8 @@
           "fields": "",
           "values": false
         },
-        "textMode": "value"
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
       },
       "fieldConfig": {
         "defaults": {
@@ -328,7 +326,9 @@
                 "value": 201
               }
             ]
-          }
+          },
+          "min": 0,
+          "max": 500
         }
       },
       "targets": [
@@ -338,7 +338,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "clamp_min(45000 - esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_iaq\"}, 0)",
+          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_iaq\"}",
           "legendFormat": "IAQ"
         }
       ]
@@ -803,7 +803,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "clamp_min(45000 - esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_iaq\"}, 0)",
+          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_iaq\"}",
           "legendFormat": "IAQ"
         }
       ]
@@ -837,7 +837,7 @@
       },
       "fieldConfig": {
         "defaults": {
-          "unit": "conµgm3",
+          "unit": "conμgm3",
           "min": 0,
           "color": {
             "mode": "thresholds"
@@ -914,7 +914,7 @@
       },
       "fieldConfig": {
         "defaults": {
-          "unit": "conµgm3",
+          "unit": "conμgm3",
           "min": 0,
           "color": {
             "mode": "thresholds"
@@ -991,7 +991,7 @@
       },
       "fieldConfig": {
         "defaults": {
-          "unit": "conµgm3",
+          "unit": "conμgm3",
           "color": {
             "mode": "thresholds"
           },
@@ -1055,7 +1055,7 @@
       },
       "fieldConfig": {
         "defaults": {
-          "unit": "conµgm3",
+          "unit": "conμgm3",
           "color": {
             "mode": "thresholds"
           },
