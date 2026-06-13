@@ -21,7 +21,7 @@
   "timezone": "browser",
   "title": "ESP32 Smoke — Air Quality",
   "uid": "esp32-smoke",
-  "version": 11,
+  "version": 12,
   "panels": [
     {
       "id": 50,
@@ -49,7 +49,7 @@
                   "index": 0
                 },
                 "1": {
-                  "text": "⚠  ВНЕ НОРМЫ",
+                  "text": "🔴  ВНЕ НОРМЫ",
                   "color": "red",
                   "index": 1
                 }
@@ -120,13 +120,13 @@
               "type": "value",
               "options": {
                 "0": {
-                  "text": "✅  За сутки без отклонений",
+                  "text": "✅  За сутки чисто",
                   "color": "green",
                   "index": 0
                 },
                 "1": {
-                  "text": "⚠  За сутки был выход за норму",
-                  "color": "red",
+                  "text": "🟡  За 24 часа был выход за норму",
+                  "color": "yellow",
                   "index": 1
                 }
               }
@@ -140,7 +140,7 @@
                 "value": null
               },
               {
-                "color": "red",
+                "color": "yellow",
                 "value": 1
               }
             ]
@@ -176,6 +176,300 @@
       ]
     },
     {
+      "id": 52,
+      "title": "Что превышало норму",
+      "type": "table",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 4
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "format": "table",
+          "instant": true,
+          "expr": "sum by (name) (esphome_sensor_value{job=\"esp32-smoke\", name=~\"ccs811_eco2|ccs811_tvoc|bme680_iaq|sps30_pm_2_5|sps30_pm_10_0\"})"
+        },
+        {
+          "refId": "C",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "format": "table",
+          "instant": true,
+          "expr": "sum by (name) ( max_over_time(esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_eco2\"}[24h]) / 1000 or max_over_time(esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"}[24h]) / 150 or max_over_time(esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_iaq\"}[24h]) / 100 or max_over_time(esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"}[24h]) / 12 or max_over_time(esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_10_0\"}[24h]) / 54 ) * 100"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "name",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Time 1": true,
+              "Time 2": true
+            },
+            "renameByName": {
+              "name": "Показатель",
+              "Value #A": "Сейчас",
+              "Value #C": "% нормы (24ч)"
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "field": "% нормы (24ч)",
+                "desc": true
+              }
+            ]
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            }
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Показатель"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "ccs811_eco2": {
+                        "text": "CO₂",
+                        "index": 0
+                      },
+                      "ccs811_tvoc": {
+                        "text": "TVOC",
+                        "index": 1
+                      },
+                      "bme680_iaq": {
+                        "text": "IAQ",
+                        "index": 2
+                      },
+                      "sps30_pm_2_5": {
+                        "text": "PM2.5",
+                        "index": 3
+                      },
+                      "sps30_pm_10_0": {
+                        "text": "PM10",
+                        "index": 4
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "% нормы (24ч)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 80
+                    },
+                    {
+                      "color": "red",
+                      "value": 100
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Сейчас"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 1
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true
+      }
+    },
+    {
+      "id": 53,
+      "title": "Когда превышало (история)",
+      "type": "state-timeline",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 4
+      },
+      "options": {
+        "mergeValues": true,
+        "showValue": "never",
+        "alignValue": "center",
+        "rowHeight": 0.8,
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "fillOpacity": 85,
+            "lineWidth": 0
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "ОК",
+                  "color": "green",
+                  "index": 0
+                },
+                "1": {
+                  "text": "превышение",
+                  "color": "red",
+                  "index": 1
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_eco2\"} > bool 1000",
+          "legendFormat": "CO₂"
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"} > bool 150",
+          "legendFormat": "TVOC"
+        },
+        {
+          "refId": "C",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_iaq\"} > bool 100",
+          "legendFormat": "IAQ"
+        },
+        {
+          "refId": "D",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"} > bool 12",
+          "legendFormat": "PM2.5"
+        },
+        {
+          "refId": "E",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_10_0\"} > bool 54",
+          "legendFormat": "PM10"
+        }
+      ]
+    },
+    {
       "id": 10,
       "title": "Запахи и химия (VOC)",
       "type": "gauge",
@@ -187,7 +481,7 @@
         "h": 6,
         "w": 5,
         "x": 0,
-        "y": 4
+        "y": 12
       },
       "options": {
         "reduceOptions": {
@@ -247,7 +541,7 @@
         "h": 6,
         "w": 5,
         "x": 5,
-        "y": 4
+        "y": 12
       },
       "options": {
         "reduceOptions": {
@@ -307,7 +601,7 @@
         "h": 6,
         "w": 4,
         "x": 10,
-        "y": 4
+        "y": 12
       },
       "options": {
         "colorMode": "value",
@@ -372,7 +666,7 @@
         "h": 6,
         "w": 4,
         "x": 14,
-        "y": 4
+        "y": 12
       },
       "options": {
         "colorMode": "value",
@@ -441,7 +735,7 @@
         "h": 6,
         "w": 3,
         "x": 18,
-        "y": 4
+        "y": 12
       },
       "options": {
         "reduceOptions": {
@@ -507,7 +801,7 @@
         "h": 6,
         "w": 3,
         "x": 21,
-        "y": 4
+        "y": 12
       },
       "options": {
         "colorMode": "background",
@@ -573,7 +867,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 10
+        "y": 18
       },
       "id": 100
     },
@@ -589,7 +883,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 11
+        "y": 19
       },
       "fieldConfig": {
         "defaults": {
@@ -652,7 +946,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 11
+        "y": 19
       },
       "fieldConfig": {
         "defaults": {
@@ -711,7 +1005,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 19
+        "y": 27
       },
       "id": 101
     },
@@ -727,7 +1021,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 20
+        "y": 28
       },
       "fieldConfig": {
         "defaults": {
@@ -793,7 +1087,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 20
+        "y": 28
       },
       "fieldConfig": {
         "defaults": {
@@ -863,7 +1157,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 28
+        "y": 36
       },
       "fieldConfig": {
         "defaults": {
@@ -905,7 +1199,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 28
+        "y": 36
       },
       "fieldConfig": {
         "defaults": {
@@ -969,7 +1263,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 36
+        "y": 44
       },
       "panels": []
     },
@@ -985,7 +1279,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 37
+        "y": 45
       },
       "fieldConfig": {
         "defaults": {
@@ -1062,7 +1356,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 37
+        "y": 45
       },
       "fieldConfig": {
         "defaults": {
@@ -1139,7 +1433,7 @@
         "h": 4,
         "w": 12,
         "x": 0,
-        "y": 45
+        "y": 53
       },
       "fieldConfig": {
         "defaults": {
@@ -1203,7 +1497,7 @@
         "h": 4,
         "w": 12,
         "x": 12,
-        "y": 45
+        "y": 53
       },
       "fieldConfig": {
         "defaults": {
@@ -1263,7 +1557,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 49
+        "y": 57
       },
       "id": 102
     },
@@ -1279,7 +1573,7 @@
         "h": 5,
         "w": 4,
         "x": 0,
-        "y": 50
+        "y": 58
       },
       "options": {
         "colorMode": "value",
@@ -1340,7 +1634,7 @@
         "h": 5,
         "w": 4,
         "x": 4,
-        "y": 50
+        "y": 58
       },
       "options": {
         "colorMode": "none",
@@ -1384,7 +1678,7 @@
         "h": 5,
         "w": 16,
         "x": 8,
-        "y": 50
+        "y": 58
       },
       "options": {
         "mergeValues": true,
@@ -1462,7 +1756,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 55
+        "y": 63
       },
       "fieldConfig": {
         "defaults": {
