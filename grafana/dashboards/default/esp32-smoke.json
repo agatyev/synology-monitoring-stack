@@ -21,7 +21,7 @@
   "timezone": "browser",
   "title": "ESP32 Smoke — Air Quality",
   "uid": "esp32-smoke",
-  "version": 12,
+  "version": 13,
   "panels": [
     {
       "id": 50,
@@ -44,12 +44,12 @@
               "type": "value",
               "options": {
                 "0": {
-                  "text": "✅  В НОРМЕ",
+                  "text": "ОК",
                   "color": "green",
                   "index": 0
                 },
                 "1": {
-                  "text": "🔴  ВНЕ НОРМЫ",
+                  "text": "ОК",
                   "color": "red",
                   "index": 1
                 }
@@ -270,23 +270,23 @@
                     "type": "value",
                     "options": {
                       "ccs811_eco2": {
-                        "text": "CO₂",
+                        "text": "Углекислый газ (CO₂)",
                         "index": 0
                       },
                       "ccs811_tvoc": {
-                        "text": "TVOC",
+                        "text": "Запахи и химия (ЛОС)",
                         "index": 1
                       },
                       "bme680_iaq": {
-                        "text": "IAQ",
+                        "text": "Качество воздуха (индекс)",
                         "index": 2
                       },
                       "sps30_pm_2_5": {
-                        "text": "PM2.5",
+                        "text": "Мелкая пыль / дым (PM2.5)",
                         "index": 3
                       },
                       "sps30_pm_10_0": {
-                        "text": "PM10",
+                        "text": "Крупная пыль (PM10)",
                         "index": 4
                       }
                     }
@@ -377,7 +377,7 @@
         "legend": {
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         }
       },
       "fieldConfig": {
@@ -429,7 +429,7 @@
             "uid": "prometheus"
           },
           "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_eco2\"} > bool 1000",
-          "legendFormat": "CO₂"
+          "legendFormat": "Углекислый газ (CO₂)"
         },
         {
           "refId": "B",
@@ -438,7 +438,7 @@
             "uid": "prometheus"
           },
           "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"} > bool 150",
-          "legendFormat": "TVOC"
+          "legendFormat": "Запахи и химия (ЛОС)"
         },
         {
           "refId": "C",
@@ -447,7 +447,7 @@
             "uid": "prometheus"
           },
           "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_iaq\"} > bool 100",
-          "legendFormat": "IAQ"
+          "legendFormat": "Качество воздуха (индекс)"
         },
         {
           "refId": "D",
@@ -456,7 +456,7 @@
             "uid": "prometheus"
           },
           "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"} > bool 12",
-          "legendFormat": "PM2.5"
+          "legendFormat": "Мелкая пыль / дым (PM2.5)"
         },
         {
           "refId": "E",
@@ -465,7 +465,7 @@
             "uid": "prometheus"
           },
           "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_10_0\"} > bool 54",
-          "legendFormat": "PM10"
+          "legendFormat": "Крупная пыль (PM10)"
         }
       ]
     },
