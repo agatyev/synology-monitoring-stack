@@ -21,7 +21,7 @@
   "timezone": "browser",
   "title": "ESP32 Smoke — Air Quality",
   "uid": "esp32-smoke",
-  "version": 5,
+  "version": 8,
   "panels": [
     {
       "id": 10,
@@ -279,7 +279,7 @@
     },
     {
       "id": 14,
-      "title": "Загрязнение (газ)",
+      "title": "Качество воздуха (IAQ)",
       "type": "stat",
       "datasource": {
         "type": "prometheus",
@@ -317,11 +317,15 @@
               },
               {
                 "color": "yellow",
-                "value": 10000
+                "value": 101
+              },
+              {
+                "color": "orange",
+                "value": 151
               },
               {
                 "color": "red",
-                "value": 20000
+                "value": 201
               }
             ]
           }
@@ -334,7 +338,8 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "clamp_min(45000 - esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_gas_resistance\"}, 0)"
+          "expr": "clamp_min(45000 - esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_iaq\"}, 0)",
+          "legendFormat": "IAQ"
         }
       ]
     },
@@ -738,7 +743,7 @@
     },
     {
       "id": 6,
-      "title": "Загрязнение по газу · вверх = грязнее",
+      "title": "Индекс качества воздуха IAQ · 0–50 отлично · 51–100 хорошо · >150 загрязнён",
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
@@ -762,7 +767,7 @@
             "lineWidth": 2,
             "lineInterpolation": "smooth",
             "fillOpacity": 25,
-            "gradientMode": "opacity",
+            "gradientMode": "scheme",
             "spanNulls": 60000,
             "thresholdsStyle": {
               "mode": "dashed"
@@ -777,11 +782,15 @@
               },
               {
                 "color": "yellow",
-                "value": 10000
+                "value": 101
+              },
+              {
+                "color": "orange",
+                "value": 151
               },
               {
                 "color": "red",
-                "value": 20000
+                "value": 201
               }
             ]
           }
@@ -794,8 +803,303 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "clamp_min(45000 - esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_gas_resistance\"}, 0)",
-          "legendFormat": "Загрязнение"
+          "expr": "clamp_min(45000 - esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_iaq\"}, 0)",
+          "legendFormat": "IAQ"
+        }
+      ]
+    },
+    {
+      "id": 103,
+      "type": "row",
+      "collapsed": false,
+      "title": "Взвешенные частицы (PM)",
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 32
+      },
+      "panels": []
+    },
+    {
+      "id": 30,
+      "title": "PM2.5 · норма <12 хорошо · >35 вредно (µg/m³)",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 33
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "conµgm3",
+          "min": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "lineWidth": 2,
+            "lineInterpolation": "smooth",
+            "fillOpacity": 22,
+            "gradientMode": "scheme",
+            "spanNulls": 60000,
+            "showPoints": "never",
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 12
+              },
+              {
+                "color": "red",
+                "value": 35
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"}",
+          "legendFormat": "PM2.5"
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "title": "PM10 · норма <54 хорошо · >154 вредно (µg/m³)",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 33
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "conµgm3",
+          "min": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "lineWidth": 2,
+            "lineInterpolation": "smooth",
+            "fillOpacity": 22,
+            "gradientMode": "scheme",
+            "spanNulls": 60000,
+            "showPoints": "never",
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 54
+              },
+              {
+                "color": "red",
+                "value": 154
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_10_0\"}",
+          "legendFormat": "PM10"
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "title": "PM2.5 сейчас",
+      "type": "stat",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 12,
+        "x": 0,
+        "y": 41
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "conµgm3",
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 12
+              },
+              {
+                "color": "red",
+                "value": 35
+              }
+            ]
+          }
+        }
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "textMode": "value_and_name",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"}",
+          "legendFormat": "PM2.5 сейчас"
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "title": "PM10 сейчас",
+      "type": "stat",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 12,
+        "x": 12,
+        "y": 41
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "conµgm3",
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 54
+              },
+              {
+                "color": "red",
+                "value": 154
+              }
+            ]
+          }
+        }
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "textMode": "value_and_name",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_10_0\"}",
+          "legendFormat": "PM10 сейчас"
         }
       ]
     },
@@ -807,7 +1111,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 32
+        "y": 45
       },
       "id": 102
     },
@@ -823,7 +1127,7 @@
         "h": 5,
         "w": 4,
         "x": 0,
-        "y": 33
+        "y": 46
       },
       "options": {
         "colorMode": "value",
@@ -884,7 +1188,7 @@
         "h": 5,
         "w": 4,
         "x": 4,
-        "y": 33
+        "y": 46
       },
       "options": {
         "colorMode": "none",
@@ -928,7 +1232,7 @@
         "h": 5,
         "w": 16,
         "x": 8,
-        "y": 33
+        "y": 46
       },
       "options": {
         "mergeValues": true,
@@ -1006,7 +1310,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 38
+        "y": 51
       },
       "fieldConfig": {
         "defaults": {
@@ -1055,288 +1359,6 @@
           },
           "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"wifi_signal\"}",
           "legendFormat": "RSSI"
-        }
-      ]
-    },
-    {
-      "id": 103,
-      "type": "row",
-      "collapsed": false,
-      "title": "Взвешенные частицы (PM)",
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 45
-      },
-      "panels": []
-    },
-    {
-      "id": 30,
-      "title": "Частицы PM · норма PM2.5: <12 хорошо · >35 вредно (µg/m³)",
-      "type": "timeseries",
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 46
-      },
-      "fieldConfig": {
-        "defaults": {
-          "unit": "conµgm3",
-          "min": 0,
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "lineWidth": 3,
-            "lineInterpolation": "smooth",
-            "fillOpacity": 22,
-            "gradientMode": "scheme",
-            "spanNulls": 60000,
-            "showPoints": "never",
-            "thresholdsStyle": {
-              "mode": "dashed"
-            }
-          },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 12
-              },
-              {
-                "color": "red",
-                "value": 35
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "PM1.0"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "#8E8E8E"
-                }
-              },
-              {
-                "id": "custom.fillOpacity",
-                "value": 0
-              },
-              {
-                "id": "custom.lineWidth",
-                "value": 1
-              },
-              {
-                "id": "custom.lineStyle",
-                "value": {
-                  "fill": "dash",
-                  "dash": [
-                    6,
-                    6
-                  ]
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "PM4.0"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "#B0B0B0"
-                }
-              },
-              {
-                "id": "custom.fillOpacity",
-                "value": 0
-              },
-              {
-                "id": "custom.lineWidth",
-                "value": 1
-              },
-              {
-                "id": "custom.lineStyle",
-                "value": {
-                  "fill": "dash",
-                  "dash": [
-                    6,
-                    6
-                  ]
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "PM10"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "#C8C8C8"
-                }
-              },
-              {
-                "id": "custom.fillOpacity",
-                "value": 0
-              },
-              {
-                "id": "custom.lineWidth",
-                "value": 1
-              },
-              {
-                "id": "custom.lineStyle",
-                "value": {
-                  "fill": "dash",
-                  "dash": [
-                    6,
-                    6
-                  ]
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "options": {
-        "legend": {
-          "displayMode": "list",
-          "placement": "bottom",
-          "calcs": [
-            "lastNotNull",
-            "max"
-          ]
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "desc"
-        }
-      },
-      "targets": [
-        {
-          "refId": "A",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"}",
-          "legendFormat": "PM2.5"
-        },
-        {
-          "refId": "B",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_1_0\"}",
-          "legendFormat": "PM1.0"
-        },
-        {
-          "refId": "C",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_4_0\"}",
-          "legendFormat": "PM4.0"
-        },
-        {
-          "refId": "D",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_10_0\"}",
-          "legendFormat": "PM10"
-        }
-      ]
-    },
-    {
-      "id": 31,
-      "title": "PM2.5 сейчас",
-      "type": "stat",
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 46
-      },
-      "fieldConfig": {
-        "defaults": {
-          "unit": "conµgm3",
-          "color": {
-            "mode": "thresholds"
-          },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 12
-              },
-              {
-                "color": "red",
-                "value": 35
-              }
-            ]
-          }
-        }
-      },
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "textMode": "value_and_name",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        }
-      },
-      "targets": [
-        {
-          "refId": "A",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"}",
-          "legendFormat": "PM2.5"
         }
       ]
     }
