@@ -21,7 +21,7 @@
   "timezone": "browser",
   "title": "ESP32 Smoke — Air Quality",
   "uid": "esp32-smoke",
-  "version": 15,
+  "version": 16,
   "panels": [
     {
       "id": 50,
@@ -1546,6 +1546,206 @@
       ]
     },
     {
+      "id": 104,
+      "type": "row",
+      "collapsed": false,
+      "title": "Частицы — число и размер (SPS30)",
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 57
+      },
+      "panels": []
+    },
+    {
+      "id": 40,
+      "title": "PM1 · самая мелкая фракция (µg/m³)",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 0,
+        "y": 58
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "conμgm3",
+          "min": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "lineWidth": 2,
+            "lineInterpolation": "smooth",
+            "fillOpacity": 22,
+            "gradientMode": "scheme",
+            "spanNulls": 60000,
+            "showPoints": "never"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 12
+              },
+              {
+                "color": "red",
+                "value": 35
+              }
+            ]
+          }
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_1_0\"}",
+          "legendFormat": "PM1"
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "title": "Число частиц по фракциям (шт/см³) · NC0.5 чувствителен к дыму",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 8,
+        "y": 58
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "min": 0,
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "lineWidth": 2,
+            "lineInterpolation": "smooth",
+            "fillOpacity": 8,
+            "gradientMode": "none",
+            "spanNulls": 60000,
+            "showPoints": "never"
+          }
+        }
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pmc_0_5\"}",
+          "legendFormat": "<0.5µm"
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pmc_1_0\"}",
+          "legendFormat": "<1µm"
+        },
+        {
+          "refId": "C",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pmc_2_5\"}",
+          "legendFormat": "<2.5µm"
+        },
+        {
+          "refId": "D",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pmc_10_0\"}",
+          "legendFormat": "<10µm"
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "title": "Средний размер частиц (µm) · дым мелкий, пыль крупнее",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 16,
+        "y": 58
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "µm",
+          "min": 0,
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "orange"
+          },
+          "custom": {
+            "lineWidth": 2,
+            "lineInterpolation": "smooth",
+            "fillOpacity": 15,
+            "gradientMode": "opacity",
+            "spanNulls": 60000,
+            "showPoints": "never"
+          }
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_size\"}",
+          "legendFormat": "размер"
+        }
+      ]
+    },
+    {
       "type": "row",
       "title": "Связь платы",
       "collapsed": false,
@@ -1553,7 +1753,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 57
+        "y": 65
       },
       "id": 102
     },
@@ -1569,7 +1769,7 @@
         "h": 5,
         "w": 4,
         "x": 0,
-        "y": 58
+        "y": 66
       },
       "options": {
         "colorMode": "value",
@@ -1630,7 +1830,7 @@
         "h": 5,
         "w": 4,
         "x": 4,
-        "y": 58
+        "y": 66
       },
       "options": {
         "colorMode": "none",
@@ -1674,7 +1874,7 @@
         "h": 5,
         "w": 16,
         "x": 8,
-        "y": 58
+        "y": 66
       },
       "options": {
         "mergeValues": true,
@@ -1752,7 +1952,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 63
+        "y": 71
       },
       "fieldConfig": {
         "defaults": {
