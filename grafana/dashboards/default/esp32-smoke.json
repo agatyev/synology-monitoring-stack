@@ -21,7 +21,7 @@
   "timezone": "browser",
   "title": "ESP32 Smoke — Air Quality",
   "uid": "esp32-smoke",
-  "version": 19,
+  "version": 20,
   "panels": [
     {
       "id": 50,
@@ -95,7 +95,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "max(\n  (esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_eco2\"} > bool 1000)\n  or (esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"} > bool 150)\n  or (esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_iaq\"} > bool 100)\n  or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"} > bool 12)\n  or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_10_0\"} > bool 54)\n)"
+          "expr": "max(\n  (esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"} > bool 150)\n  or (esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_iaq\"} > bool 100)\n  or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"} > bool 12)\n  or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_10_0\"} > bool 54)\n)"
         }
       ]
     },
@@ -122,7 +122,7 @@
           },
           "format": "table",
           "instant": true,
-          "expr": "sum by (name) (esphome_sensor_value{job=\"esp32-smoke\", name=~\"ccs811_eco2|ccs811_tvoc|bme680_iaq|sps30_pm_2_5|sps30_pm_10_0\"})"
+          "expr": "sum by (name) (esphome_sensor_value{job=\"esp32-smoke\", name=~\"ccs811_tvoc|bme680_iaq|sps30_pm_2_5|sps30_pm_10_0\"})"
         },
         {
           "refId": "B",
@@ -132,7 +132,7 @@
           },
           "format": "table",
           "instant": true,
-          "expr": "sum by (name) ( (esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_eco2\"} >= 0) * 1000 or (esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"} >= 0) * 150 or (esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_iaq\"} >= 0) * 100 or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"} >= 0) * 12 or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_10_0\"} >= 0) * 54 )"
+          "expr": "sum by (name) ( (esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"} >= 0) * 150 or (esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_iaq\"} >= 0) * 100 or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"} >= 0) * 12 or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_10_0\"} >= 0) * 54 )"
         },
         {
           "refId": "C",
@@ -142,7 +142,7 @@
           },
           "format": "table",
           "instant": true,
-          "expr": "sum by (name) ( (esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_eco2\"} > bool 1000) or (esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"} > bool 150) or (esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_iaq\"} > bool 100) or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"} > bool 12) or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_10_0\"} > bool 54) )"
+          "expr": "sum by (name) ( (esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"} > bool 150) or (esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_iaq\"} > bool 100) or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"} > bool 12) or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_10_0\"} > bool 54) )"
         }
       ],
       "transformations": [
@@ -210,10 +210,6 @@
                   {
                     "type": "value",
                     "options": {
-                      "ccs811_eco2": {
-                        "text": "Углекислый газ (CO₂)",
-                        "index": 0
-                      },
                       "ccs811_tvoc": {
                         "text": "Запахи и химия (ЛОС)",
                         "index": 1
@@ -429,20 +425,11 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_eco2\"} > bool 1000",
-          "legendFormat": "Углекислый газ (CO₂)"
-        },
-        {
-          "refId": "B",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
           "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"} > bool 150",
           "legendFormat": "Запахи и химия (ЛОС)"
         },
         {
-          "refId": "C",
+          "refId": "B",
           "datasource": {
             "type": "prometheus",
             "uid": "prometheus"
@@ -451,7 +438,7 @@
           "legendFormat": "Качество воздуха (индекс)"
         },
         {
-          "refId": "D",
+          "refId": "C",
           "datasource": {
             "type": "prometheus",
             "uid": "prometheus"
@@ -460,7 +447,7 @@
           "legendFormat": "Мелкая пыль / дым (PM2.5)"
         },
         {
-          "refId": "E",
+          "refId": "D",
           "datasource": {
             "type": "prometheus",
             "uid": "prometheus"
@@ -531,66 +518,6 @@
       ]
     },
     {
-      "id": 11,
-      "title": "Углекислый газ (CO₂)",
-      "type": "gauge",
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 5,
-        "x": 5,
-        "y": 12
-      },
-      "options": {
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true
-      },
-      "fieldConfig": {
-        "defaults": {
-          "unit": "ppm",
-          "min": 400,
-          "max": 3000,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 1000
-              },
-              {
-                "color": "red",
-                "value": 2000
-              }
-            ]
-          }
-        }
-      },
-      "targets": [
-        {
-          "refId": "A",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_eco2\"}"
-        }
-      ]
-    },
-    {
       "id": 12,
       "title": "Температура",
       "type": "stat",
@@ -600,8 +527,8 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 4,
-        "x": 10,
+        "w": 5,
+        "x": 5,
         "y": 12
       },
       "options": {
@@ -665,8 +592,8 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 4,
-        "x": 14,
+        "w": 5,
+        "x": 10,
         "y": 12
       },
       "options": {
@@ -734,8 +661,8 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 3,
-        "x": 18,
+        "w": 5,
+        "x": 15,
         "y": 12
       },
       "options": {
@@ -800,8 +727,8 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 3,
-        "x": 21,
+        "w": 4,
+        "x": 20,
         "y": 12
       },
       "options": {
@@ -862,7 +789,7 @@
     },
     {
       "type": "row",
-      "title": "CCS811 — запахи, дым, CO₂",
+      "title": "CCS811 — запахи и химия",
       "collapsed": false,
       "gridPos": {
         "h": 1,
@@ -882,7 +809,7 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 12,
+        "w": 24,
         "x": 0,
         "y": 19
       },
@@ -931,68 +858,6 @@
           },
           "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"}",
           "legendFormat": "TVOC"
-        }
-      ]
-    },
-    {
-      "id": 2,
-      "title": "Углекислый газ (CO₂) · норма <1000 ppm",
-      "type": "timeseries",
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 19
-      },
-      "fieldConfig": {
-        "defaults": {
-          "unit": "ppm",
-          "min": 400,
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "lineWidth": 2,
-            "lineInterpolation": "smooth",
-            "fillOpacity": 25,
-            "gradientMode": "scheme",
-            "spanNulls": 60000,
-            "thresholdsStyle": {
-              "mode": "dashed"
-            }
-          },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 1000
-              },
-              {
-                "color": "red",
-                "value": 2000
-              }
-            ]
-          }
-        }
-      },
-      "targets": [
-        {
-          "refId": "A",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_eco2\"}",
-          "legendFormat": "eCO2"
         }
       ]
     },
