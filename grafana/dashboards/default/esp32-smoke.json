@@ -21,7 +21,7 @@
   "timezone": "browser",
   "title": "ESP32 Smoke — Air Quality",
   "uid": "esp32-smoke",
-  "version": 17,
+  "version": 18,
   "panels": [
     {
       "id": 50,
@@ -1703,7 +1703,7 @@
     },
     {
       "id": 42,
-      "title": "Дым мелкий / пыль крупная — размер частиц (µm)",
+      "title": "Размер частиц (µm): ≤0.5 дым · 0.5–1 мелкие · 1–2.5 пыль · >2.5 песок",
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
@@ -1720,16 +1720,40 @@
           "unit": "µm",
           "min": 0,
           "color": {
-            "mode": "fixed",
-            "fixedColor": "orange"
+            "mode": "thresholds"
           },
           "custom": {
             "lineWidth": 2,
             "lineInterpolation": "smooth",
-            "fillOpacity": 15,
-            "gradientMode": "opacity",
+            "fillOpacity": 18,
+            "gradientMode": "scheme",
             "spanNulls": 60000,
-            "showPoints": "never"
+            "showPoints": "never",
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "max": 4,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "purple",
+                "value": null
+              },
+              {
+                "color": "blue",
+                "value": 0.5
+              },
+              {
+                "color": "yellow",
+                "value": 1
+              },
+              {
+                "color": "orange",
+                "value": 2.5
+              }
+            ]
           }
         }
       },
