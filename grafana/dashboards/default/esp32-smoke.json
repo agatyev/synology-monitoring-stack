@@ -15,13 +15,13 @@
     "list": []
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-24h",
     "to": "now"
   },
   "timezone": "browser",
   "title": "ESP32 Smoke — Air Quality",
   "uid": "esp32-smoke",
-  "version": 21,
+  "version": 22,
   "panels": [
     {
       "id": 50,
@@ -634,7 +634,7 @@
     },
     {
       "id": 14,
-      "title": "Качество воздуха (IAQ)",
+      "title": "Качество по запахам (IAQ)",
       "type": "gauge",
       "datasource": {
         "type": "prometheus",
@@ -782,7 +782,7 @@
     },
     {
       "id": 1,
-      "title": "Запахи и химия (VOC) · норма <150 ppb",
+      "title": "Запахи и химия (VOC) · ориентир <150 ppb (офиц. нормы нет)",
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
@@ -1040,7 +1040,7 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 12,
+        "w": 8,
         "x": 12,
         "y": 36
       },
@@ -1096,6 +1096,92 @@
         }
       ],
       "description": "Датчик спёртости: запахи и испарения от мебели, химии, готовки, людей. Горит красным → проветри. Это не пыль и не CO₂."
+    },
+    {
+      "id": 7,
+      "title": "Калибровка IAQ",
+      "type": "stat",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 20,
+        "y": 36
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "format": "table",
+          "instant": true,
+          "expr": "esphome_text_sensor_value{job=\"esp32-smoke\", name=\"bme680_iaq_accuracy\"}"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "labelsToFields",
+          "options": {
+            "mode": "columns",
+            "keepLabels": [
+              "value"
+            ]
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "Stabilizing": {
+                  "text": "прогрев",
+                  "color": "red",
+                  "index": 0
+                },
+                "Uncertain": {
+                  "text": "неточно",
+                  "color": "orange",
+                  "index": 1
+                },
+                "Calibrating": {
+                  "text": "калибруется",
+                  "color": "yellow",
+                  "index": 2
+                },
+                "Calibrated": {
+                  "text": "точно ✓",
+                  "color": "green",
+                  "index": 3
+                }
+              }
+            }
+          ]
+        }
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "textMode": "value",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^value$/",
+          "values": false
+        }
+      },
+      "description": "Статус калибровки IAQ. Пока не «точно» — значениям IAQ верить рано (датчик прогревается)."
     },
     {
       "id": 103,
@@ -1154,8 +1240,12 @@
                 "value": 9
               },
               {
-                "color": "red",
+                "color": "orange",
                 "value": 35
+              },
+              {
+                "color": "red",
+                "value": 55
               }
             ]
           }
@@ -1296,8 +1386,12 @@
                 "value": 9
               },
               {
-                "color": "red",
+                "color": "orange",
                 "value": 35
+              },
+              {
+                "color": "red",
+                "value": 55
               }
             ]
           }
@@ -1452,7 +1546,7 @@
     },
     {
       "id": 41,
-      "title": "Сколько частиц в воздухе (шт/см³) — взлетает при дыме",
+      "title": "Состав частиц по размеру (шт/см³) — дым внизу, пыль сверху",
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
@@ -1469,31 +1563,79 @@
           "unit": "short",
           "min": 0,
           "color": {
-            "mode": "palette-classic"
+            "mode": "thresholds"
           },
           "custom": {
             "lineWidth": 1,
             "lineInterpolation": "smooth",
-            "fillOpacity": 8,
+            "fillOpacity": 45,
             "gradientMode": "none",
             "spanNulls": 60000,
-            "showPoints": "never"
+            "showPoints": "never",
+            "stacking": {
+              "mode": "normal",
+              "group": "A"
+            }
           }
         },
         "overrides": [
           {
             "matcher": {
               "id": "byName",
-              "options": "≤0.5µm · дым"
+              "options": "0–0.5µm · дым"
             },
             "properties": [
               {
-                "id": "custom.lineWidth",
-                "value": 3
-              },
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "purple"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "0.5–1µm · дымка"
+            },
+            "properties": [
               {
-                "id": "custom.fillOpacity",
-                "value": 18
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "blue"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "1–2.5µm · пыль"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "yellow"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2.5–10µm · крупное"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "orange"
+                }
               }
             ]
           }
@@ -1519,8 +1661,8 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pmc_0_5\"}",
-          "legendFormat": "≤0.5µm · дым"
+          "expr": "sum(esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pmc_0_5\"})",
+          "legendFormat": "0–0.5µm · дым"
         },
         {
           "refId": "B",
@@ -1528,8 +1670,8 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pmc_1_0\"}",
-          "legendFormat": "≤1µm"
+          "expr": "clamp_min(sum(esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pmc_1_0\"}) - sum(esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pmc_0_5\"}), 0)",
+          "legendFormat": "0.5–1µm · дымка"
         },
         {
           "refId": "C",
@@ -1537,8 +1679,8 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pmc_2_5\"}",
-          "legendFormat": "≤2.5µm"
+          "expr": "clamp_min(sum(esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pmc_2_5\"}) - sum(esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pmc_1_0\"}), 0)",
+          "legendFormat": "1–2.5µm · пыль"
         },
         {
           "refId": "D",
@@ -1546,11 +1688,11 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pmc_10_0\"}",
-          "legendFormat": "≤10µm · пыль"
+          "expr": "clamp_min(sum(esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pmc_10_0\"}) - sum(esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pmc_2_5\"}), 0)",
+          "legendFormat": "2.5–10µm · крупное"
         }
       ],
-      "description": "Сколько частиц каждого размера в кубосантиметре. Растёт при любом задымлении или пыли. Самые мелкие (≤0.5µm, жирная линия) первыми и резче всех скачут при курении — следи за ней."
+      "description": "Частицы по размерным группам (НЕ накопительно, стопкой). Дым даёт много самых мелких (0–0.5µm, низ графика), пыль — крупные (2.5–10µm, верх). По составу видно: горение это или просто пыль."
     },
     {
       "id": 42,
