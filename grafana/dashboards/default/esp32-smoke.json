@@ -21,7 +21,7 @@
   "timezone": "browser",
   "title": "ESP32 Smoke — Air Quality",
   "uid": "esp32-smoke",
-  "version": 20,
+  "version": 21,
   "panels": [
     {
       "id": 50,
@@ -95,7 +95,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "max(\n  (esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"} > bool 150)\n  or (esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_iaq\"} > bool 100)\n  or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"} > bool 12)\n  or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_10_0\"} > bool 54)\n)"
+          "expr": "max(\n  (esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"} > bool 150)\n  or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"} > bool 9)\n  or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_10_0\"} > bool 54)\n)"
         }
       ]
     },
@@ -122,7 +122,7 @@
           },
           "format": "table",
           "instant": true,
-          "expr": "sum by (name) (esphome_sensor_value{job=\"esp32-smoke\", name=~\"ccs811_tvoc|bme680_iaq|sps30_pm_2_5|sps30_pm_10_0\"})"
+          "expr": "sum by (name) (esphome_sensor_value{job=\"esp32-smoke\", name=~\"ccs811_tvoc|sps30_pm_2_5|sps30_pm_10_0\"})"
         },
         {
           "refId": "B",
@@ -132,7 +132,7 @@
           },
           "format": "table",
           "instant": true,
-          "expr": "sum by (name) ( (esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"} >= 0) * 150 or (esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_iaq\"} >= 0) * 100 or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"} >= 0) * 12 or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_10_0\"} >= 0) * 54 )"
+          "expr": "sum by (name) ( (esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"} >= 0) * 150 or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"} >= 0) * 9 or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_10_0\"} >= 0) * 54 )"
         },
         {
           "refId": "C",
@@ -142,7 +142,7 @@
           },
           "format": "table",
           "instant": true,
-          "expr": "sum by (name) ( (esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"} > bool 150) or (esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_iaq\"} > bool 100) or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"} > bool 12) or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_10_0\"} > bool 54) )"
+          "expr": "sum by (name) ( (esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"} > bool 150) or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"} > bool 9) or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_10_0\"} > bool 54) )"
         }
       ],
       "transformations": [
@@ -212,19 +212,15 @@
                     "options": {
                       "ccs811_tvoc": {
                         "text": "Запахи и химия (ЛОС)",
-                        "index": 1
-                      },
-                      "bme680_iaq": {
-                        "text": "Качество воздуха (индекс)",
-                        "index": 2
+                        "index": 0
                       },
                       "sps30_pm_2_5": {
                         "text": "Мелкая пыль / дым (PM2.5)",
-                        "index": 3
+                        "index": 1
                       },
                       "sps30_pm_10_0": {
                         "text": "Крупная пыль (PM10)",
-                        "index": 4
+                        "index": 2
                       }
                     }
                   }
@@ -268,17 +264,11 @@
                   {
                     "type": "value",
                     "options": {
-                      "1000": {
-                        "text": "до 1000"
-                      },
                       "150": {
                         "text": "до 150"
                       },
-                      "100": {
-                        "text": "до 100"
-                      },
-                      "12": {
-                        "text": "до 12"
+                      "9": {
+                        "text": "до 9"
                       },
                       "54": {
                         "text": "до 54"
@@ -434,20 +424,11 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_iaq\"} > bool 100",
-          "legendFormat": "Качество воздуха (индекс)"
-        },
-        {
-          "refId": "C",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"} > bool 12",
+          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"} > bool 9",
           "legendFormat": "Мелкая пыль / дым (PM2.5)"
         },
         {
-          "refId": "D",
+          "refId": "C",
           "datasource": {
             "type": "prometheus",
             "uid": "prometheus"
@@ -1131,7 +1112,7 @@
     },
     {
       "id": 30,
-      "title": "Дым, гарь, готовка — PM2.5 · норма <12 (µg/m³)",
+      "title": "Дым, гарь, готовка — PM2.5 · норма <9 (µg/m³)",
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
@@ -1170,7 +1151,7 @@
               },
               {
                 "color": "yellow",
-                "value": 12
+                "value": 9
               },
               {
                 "color": "red",
@@ -1312,7 +1293,7 @@
               },
               {
                 "color": "yellow",
-                "value": 12
+                "value": 9
               },
               {
                 "color": "red",
@@ -1426,7 +1407,7 @@
     },
     {
       "id": 40,
-      "title": "Горение: сигареты, свечи, выхлоп — PM1 (µg/m³)",
+      "title": "PM1 — мельчайшие частицы ≤1µm: дым, гарь, выхлоп (µg/m³)",
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
@@ -1443,32 +1424,16 @@
           "unit": "conμgm3",
           "min": 0,
           "color": {
-            "mode": "thresholds"
+            "mode": "fixed",
+            "fixedColor": "orange"
           },
           "custom": {
             "lineWidth": 2,
             "lineInterpolation": "smooth",
-            "fillOpacity": 22,
-            "gradientMode": "scheme",
+            "fillOpacity": 20,
+            "gradientMode": "opacity",
             "spanNulls": 60000,
             "showPoints": "never"
-          },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 12
-              },
-              {
-                "color": "red",
-                "value": 35
-              }
-            ]
           }
         }
       },
@@ -1482,11 +1447,12 @@
           "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_1_0\"}",
           "legendFormat": "PM1"
         }
-      ]
+      ],
+      "description": "Масса самых мелких частиц (≤1 микрон): дым, гарь, выхлоп. Самая опасная фракция — проходит глубоко в лёгкие. Это часть PM2.5. Своей официальной нормы у PM1 нет, ориентир — как у PM2.5. Чем выше, тем больше горения."
     },
     {
       "id": 41,
-      "title": "Число частиц: ловит курение (смотри ≤0.5µm) — шт/см³",
+      "title": "Сколько частиц в воздухе (шт/см³) — взлетает при дыме",
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
@@ -1506,14 +1472,32 @@
             "mode": "palette-classic"
           },
           "custom": {
-            "lineWidth": 2,
+            "lineWidth": 1,
             "lineInterpolation": "smooth",
             "fillOpacity": 8,
             "gradientMode": "none",
             "spanNulls": 60000,
             "showPoints": "never"
           }
-        }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "≤0.5µm · дым"
+            },
+            "properties": [
+              {
+                "id": "custom.lineWidth",
+                "value": 3
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 18
+              }
+            ]
+          }
+        ]
       },
       "options": {
         "legend": {
@@ -1565,11 +1549,12 @@
           "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pmc_10_0\"}",
           "legendFormat": "≤10µm · пыль"
         }
-      ]
+      ],
+      "description": "Сколько частиц каждого размера в кубосантиметре. Растёт при любом задымлении или пыли. Самые мелкие (≤0.5µm, жирная линия) первыми и резче всех скачут при курении — следи за ней."
     },
     {
       "id": 42,
-      "title": "Размер частиц (µm): дым ≤0.5 · дымка 0.5–1 · пыль 1–2.5 · крупное >2.5",
+      "title": "Какие частицы: дым (мелко) ↔ пыль (крупно) — размер, µm",
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
