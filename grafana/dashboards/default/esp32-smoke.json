@@ -21,7 +21,7 @@
   "timezone": "browser",
   "title": "ESP32 Smoke — Air Quality",
   "uid": "esp32-smoke",
-  "version": 16,
+  "version": 17,
   "panels": [
     {
       "id": 50,
@@ -1254,7 +1254,7 @@
       "id": 103,
       "type": "row",
       "collapsed": false,
-      "title": "Взвешенные частицы (PM)",
+      "title": "Частицы — масса (дым · пыль · гарь)",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1265,7 +1265,7 @@
     },
     {
       "id": 30,
-      "title": "PM2.5 · норма <12 хорошо · >35 вредно (µg/m³)",
+      "title": "Дым, гарь, готовка — PM2.5 · норма <12 (µg/m³)",
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
@@ -1342,7 +1342,7 @@
     },
     {
       "id": 32,
-      "title": "PM10 · норма <54 хорошо · >154 вредно (µg/m³)",
+      "title": "Пыль, пыльца, песок — PM10 · норма <54 (µg/m³)",
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
@@ -1419,7 +1419,7 @@
     },
     {
       "id": 31,
-      "title": "PM2.5 сейчас",
+      "title": "Дым / гарь сейчас — PM2.5",
       "type": "stat",
       "datasource": {
         "type": "prometheus",
@@ -1483,7 +1483,7 @@
     },
     {
       "id": 33,
-      "title": "PM10 сейчас",
+      "title": "Пыль сейчас — PM10",
       "type": "stat",
       "datasource": {
         "type": "prometheus",
@@ -1549,7 +1549,7 @@
       "id": 104,
       "type": "row",
       "collapsed": false,
-      "title": "Частицы — число и размер (SPS30)",
+      "title": "Частицы — число и размер (дым это или пыль)",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1560,7 +1560,7 @@
     },
     {
       "id": 40,
-      "title": "PM1 · самая мелкая фракция (µg/m³)",
+      "title": "Горение: сигареты, свечи, выхлоп — PM1 (µg/m³)",
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
@@ -1620,7 +1620,7 @@
     },
     {
       "id": 41,
-      "title": "Число частиц по фракциям (шт/см³) · NC0.5 чувствителен к дыму",
+      "title": "Число частиц: ловит курение (смотри ≤0.5µm) — шт/см³",
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
@@ -1670,7 +1670,7 @@
             "uid": "prometheus"
           },
           "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pmc_0_5\"}",
-          "legendFormat": "<0.5µm"
+          "legendFormat": "≤0.5µm · дым"
         },
         {
           "refId": "B",
@@ -1679,7 +1679,7 @@
             "uid": "prometheus"
           },
           "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pmc_1_0\"}",
-          "legendFormat": "<1µm"
+          "legendFormat": "≤1µm"
         },
         {
           "refId": "C",
@@ -1688,7 +1688,7 @@
             "uid": "prometheus"
           },
           "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pmc_2_5\"}",
-          "legendFormat": "<2.5µm"
+          "legendFormat": "≤2.5µm"
         },
         {
           "refId": "D",
@@ -1697,13 +1697,13 @@
             "uid": "prometheus"
           },
           "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pmc_10_0\"}",
-          "legendFormat": "<10µm"
+          "legendFormat": "≤10µm · пыль"
         }
       ]
     },
     {
       "id": 42,
-      "title": "Средний размер частиц (µm) · дым мелкий, пыль крупнее",
+      "title": "Дым мелкий / пыль крупная — размер частиц (µm)",
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
