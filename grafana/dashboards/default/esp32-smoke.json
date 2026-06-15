@@ -21,7 +21,7 @@
   "timezone": "browser",
   "title": "ESP32 Smoke — Air Quality",
   "uid": "esp32-smoke",
-  "version": 22,
+  "version": 23,
   "panels": [
     {
       "id": 50,
@@ -32,10 +32,10 @@
         "uid": "prometheus"
       },
       "gridPos": {
-        "h": 4,
-        "w": 24,
         "x": 0,
-        "y": 0
+        "y": 0,
+        "w": 24,
+        "h": 4
       },
       "fieldConfig": {
         "defaults": {
@@ -108,10 +108,10 @@
         "uid": "prometheus"
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
         "x": 0,
-        "y": 4
+        "y": 4,
+        "w": 12,
+        "h": 8
       },
       "targets": [
         {
@@ -211,7 +211,7 @@
                     "type": "value",
                     "options": {
                       "ccs811_tvoc": {
-                        "text": "Запахи и химия (ЛОС)",
+                        "text": "Запахи и химия",
                         "index": 0
                       },
                       "sps30_pm_2_5": {
@@ -351,10 +351,10 @@
         "uid": "prometheus"
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
         "x": 12,
-        "y": 4
+        "y": 4,
+        "w": 12,
+        "h": 8
       },
       "options": {
         "mergeValues": true,
@@ -416,7 +416,7 @@
             "uid": "prometheus"
           },
           "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"} > bool 150",
-          "legendFormat": "Запахи и химия (ЛОС)"
+          "legendFormat": "Запахи и химия"
         },
         {
           "refId": "B",
@@ -440,17 +440,17 @@
     },
     {
       "id": 10,
-      "title": "Запахи и химия (VOC)",
+      "title": "Запахи и химия",
       "type": "gauge",
       "datasource": {
         "type": "prometheus",
         "uid": "prometheus"
       },
       "gridPos": {
-        "h": 6,
-        "w": 5,
         "x": 0,
-        "y": 12
+        "y": 12,
+        "w": 6,
+        "h": 6
       },
       "options": {
         "reduceOptions": {
@@ -507,10 +507,10 @@
         "uid": "prometheus"
       },
       "gridPos": {
-        "h": 6,
-        "w": 5,
-        "x": 5,
-        "y": 12
+        "x": 6,
+        "y": 12,
+        "w": 6,
+        "h": 6
       },
       "options": {
         "colorMode": "value",
@@ -572,10 +572,10 @@
         "uid": "prometheus"
       },
       "gridPos": {
-        "h": 6,
-        "w": 5,
-        "x": 10,
-        "y": 12
+        "x": 12,
+        "y": 12,
+        "w": 6,
+        "h": 6
       },
       "options": {
         "colorMode": "value",
@@ -633,72 +633,6 @@
       ]
     },
     {
-      "id": 14,
-      "title": "Качество по запахам (IAQ)",
-      "type": "gauge",
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 5,
-        "x": 15,
-        "y": 12
-      },
-      "options": {
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true
-      },
-      "fieldConfig": {
-        "defaults": {
-          "unit": "short",
-          "decimals": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 101
-              },
-              {
-                "color": "orange",
-                "value": 151
-              },
-              {
-                "color": "red",
-                "value": 201
-              }
-            ]
-          },
-          "min": 0,
-          "max": 500
-        }
-      },
-      "targets": [
-        {
-          "refId": "A",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_iaq\"}",
-          "legendFormat": "IAQ"
-        }
-      ]
-    },
-    {
       "id": 15,
       "title": "Связь",
       "type": "stat",
@@ -707,10 +641,10 @@
         "uid": "prometheus"
       },
       "gridPos": {
-        "h": 6,
-        "w": 4,
-        "x": 20,
-        "y": 12
+        "x": 18,
+        "y": 12,
+        "w": 6,
+        "h": 6
       },
       "options": {
         "colorMode": "background",
@@ -770,29 +704,29 @@
     },
     {
       "type": "row",
-      "title": "CCS811 — запахи и химия",
+      "title": "Воздух — запахи и химия",
       "collapsed": false,
       "gridPos": {
-        "h": 1,
-        "w": 24,
         "x": 0,
-        "y": 18
+        "y": 18,
+        "w": 24,
+        "h": 1
       },
       "id": 100
     },
     {
       "id": 1,
-      "title": "Запахи и химия (VOC) · ориентир <150 ppb (офиц. нормы нет)",
+      "title": "Запахи и химия · ориентир <150 ppb (офиц. нормы нет)",
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
         "uid": "prometheus"
       },
       "gridPos": {
-        "h": 8,
-        "w": 24,
         "x": 0,
-        "y": 19
+        "y": 19,
+        "w": 24,
+        "h": 8
       },
       "fieldConfig": {
         "defaults": {
@@ -838,19 +772,19 @@
             "uid": "prometheus"
           },
           "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"}",
-          "legendFormat": "TVOC"
+          "legendFormat": "Запахи и химия"
         }
       ]
     },
     {
       "type": "row",
-      "title": "BME680 — климат и газ",
+      "title": "Климат",
       "collapsed": false,
       "gridPos": {
-        "h": 1,
-        "w": 24,
         "x": 0,
-        "y": 27
+        "y": 27,
+        "w": 24,
+        "h": 1
       },
       "id": 101
     },
@@ -863,10 +797,10 @@
         "uid": "prometheus"
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
         "x": 0,
-        "y": 28
+        "y": 28,
+        "w": 8,
+        "h": 8
       },
       "fieldConfig": {
         "defaults": {
@@ -928,10 +862,10 @@
         "uid": "prometheus"
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 28
+        "x": 8,
+        "y": 28,
+        "w": 8,
+        "h": 8
       },
       "fieldConfig": {
         "defaults": {
@@ -997,10 +931,10 @@
         "uid": "prometheus"
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 36
+        "x": 16,
+        "y": 28,
+        "w": 8,
+        "h": 8
       },
       "fieldConfig": {
         "defaults": {
@@ -1031,168 +965,15 @@
       ]
     },
     {
-      "id": 6,
-      "title": "Качество воздуха по запахам (IAQ) · 0–50 отлично · >150 грязно",
-      "type": "timeseries",
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 12,
-        "y": 36
-      },
-      "fieldConfig": {
-        "defaults": {
-          "unit": "short",
-          "min": 0,
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "lineWidth": 2,
-            "lineInterpolation": "smooth",
-            "fillOpacity": 25,
-            "gradientMode": "scheme",
-            "spanNulls": 60000,
-            "thresholdsStyle": {
-              "mode": "dashed"
-            }
-          },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 101
-              },
-              {
-                "color": "orange",
-                "value": 151
-              },
-              {
-                "color": "red",
-                "value": 201
-              }
-            ]
-          }
-        }
-      },
-      "targets": [
-        {
-          "refId": "A",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"bme680_iaq\"}",
-          "legendFormat": "IAQ"
-        }
-      ],
-      "description": "Датчик спёртости: запахи и испарения от мебели, химии, готовки, людей. Горит красным → проветри. Это не пыль и не CO₂."
-    },
-    {
-      "id": 7,
-      "title": "Калибровка IAQ",
-      "type": "stat",
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 4,
-        "x": 20,
-        "y": 36
-      },
-      "targets": [
-        {
-          "refId": "A",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "format": "table",
-          "instant": true,
-          "expr": "esphome_text_sensor_value{job=\"esp32-smoke\", name=\"bme680_iaq_accuracy\"}"
-        }
-      ],
-      "transformations": [
-        {
-          "id": "labelsToFields",
-          "options": {
-            "mode": "columns",
-            "keepLabels": [
-              "value"
-            ]
-          }
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [
-            {
-              "type": "value",
-              "options": {
-                "Stabilizing": {
-                  "text": "прогрев",
-                  "color": "red",
-                  "index": 0
-                },
-                "Uncertain": {
-                  "text": "неточно",
-                  "color": "orange",
-                  "index": 1
-                },
-                "Calibrating": {
-                  "text": "калибруется",
-                  "color": "yellow",
-                  "index": 2
-                },
-                "Calibrated": {
-                  "text": "точно ✓",
-                  "color": "green",
-                  "index": 3
-                }
-              }
-            }
-          ]
-        }
-      },
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "textMode": "value",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "/^value$/",
-          "values": false
-        }
-      },
-      "description": "Статус калибровки IAQ. Пока не «точно» — значениям IAQ верить рано (датчик прогревается)."
-    },
-    {
       "id": 103,
       "type": "row",
       "collapsed": false,
-      "title": "Частицы — масса (дым · пыль · гарь)",
+      "title": "Частицы — пыль и дым",
       "gridPos": {
-        "h": 1,
-        "w": 24,
         "x": 0,
-        "y": 44
+        "y": 36,
+        "w": 24,
+        "h": 1
       },
       "panels": []
     },
@@ -1205,10 +986,10 @@
         "uid": "prometheus"
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
         "x": 0,
-        "y": 45
+        "y": 37,
+        "w": 8,
+        "h": 8
       },
       "fieldConfig": {
         "defaults": {
@@ -1286,10 +1067,10 @@
         "uid": "prometheus"
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 45
+        "x": 8,
+        "y": 37,
+        "w": 8,
+        "h": 8
       },
       "fieldConfig": {
         "defaults": {
@@ -1363,10 +1144,10 @@
         "uid": "prometheus"
       },
       "gridPos": {
-        "h": 4,
-        "w": 12,
         "x": 0,
-        "y": 53
+        "y": 45,
+        "w": 12,
+        "h": 4
       },
       "fieldConfig": {
         "defaults": {
@@ -1431,10 +1212,10 @@
         "uid": "prometheus"
       },
       "gridPos": {
-        "h": 4,
-        "w": 12,
         "x": 12,
-        "y": 53
+        "y": 45,
+        "w": 12,
+        "h": 4
       },
       "fieldConfig": {
         "defaults": {
@@ -1487,35 +1268,22 @@
       ]
     },
     {
-      "id": 104,
-      "type": "row",
-      "collapsed": false,
-      "title": "Частицы — число и размер (дым это или пыль)",
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 57
-      },
-      "panels": []
-    },
-    {
-      "id": 40,
-      "title": "PM1 — мельчайшие частицы ≤1µm: дым, гарь, выхлоп (µg/m³)",
+      "id": 41,
+      "title": "Детектор дыма — мельчайшие частицы ≤0.5µm (скачок вверх = дым)",
       "type": "timeseries",
       "datasource": {
         "type": "prometheus",
         "uid": "prometheus"
       },
       "gridPos": {
-        "h": 7,
+        "x": 16,
+        "y": 37,
         "w": 8,
-        "x": 0,
-        "y": 58
+        "h": 8
       },
       "fieldConfig": {
         "defaults": {
-          "unit": "conμgm3",
+          "unit": "short",
           "min": 0,
           "color": {
             "mode": "fixed",
@@ -1524,134 +1292,24 @@
           "custom": {
             "lineWidth": 2,
             "lineInterpolation": "smooth",
-            "fillOpacity": 20,
+            "fillOpacity": 25,
             "gradientMode": "opacity",
             "spanNulls": 60000,
             "showPoints": "never"
           }
         }
       },
-      "targets": [
-        {
-          "refId": "A",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_1_0\"}",
-          "legendFormat": "PM1"
-        }
-      ],
-      "description": "Масса самых мелких частиц (≤1 микрон): дым, гарь, выхлоп. Самая опасная фракция — проходит глубоко в лёгкие. Это часть PM2.5. Своей официальной нормы у PM1 нет, ориентир — как у PM2.5. Чем выше, тем больше горения."
-    },
-    {
-      "id": 41,
-      "title": "Состав частиц по размеру (шт/см³) — дым внизу, пыль сверху",
-      "type": "timeseries",
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 8,
-        "x": 8,
-        "y": 58
-      },
-      "fieldConfig": {
-        "defaults": {
-          "unit": "short",
-          "min": 0,
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "lineWidth": 1,
-            "lineInterpolation": "smooth",
-            "fillOpacity": 45,
-            "gradientMode": "none",
-            "spanNulls": 60000,
-            "showPoints": "never",
-            "stacking": {
-              "mode": "normal",
-              "group": "A"
-            }
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "0–0.5µm · дым"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "purple"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "0.5–1µm · дымка"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "blue"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "1–2.5µm · пыль"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "yellow"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "2.5–10µm · крупное"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "orange"
-                }
-              }
-            ]
-          }
-        ]
-      },
       "options": {
         "legend": {
           "displayMode": "list",
           "placement": "bottom",
           "calcs": [
-            "lastNotNull"
+            "lastNotNull",
+            "max"
           ]
         },
         "tooltip": {
-          "mode": "multi",
-          "sort": "desc"
+          "mode": "single"
         }
       },
       "targets": [
@@ -1661,117 +1319,21 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum(esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pmc_0_5\"})",
-          "legendFormat": "0–0.5µm · дым"
-        },
-        {
-          "refId": "B",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "expr": "clamp_min(sum(esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pmc_1_0\"}) - sum(esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pmc_0_5\"}), 0)",
-          "legendFormat": "0.5–1µm · дымка"
-        },
-        {
-          "refId": "C",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "expr": "clamp_min(sum(esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pmc_2_5\"}) - sum(esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pmc_1_0\"}), 0)",
-          "legendFormat": "1–2.5µm · пыль"
-        },
-        {
-          "refId": "D",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "expr": "clamp_min(sum(esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pmc_10_0\"}) - sum(esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pmc_2_5\"}), 0)",
-          "legendFormat": "2.5–10µm · крупное"
+          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pmc_0_5\"}",
+          "legendFormat": "≤0.5µm"
         }
       ],
-      "description": "Частицы по размерным группам (НЕ накопительно, стопкой). Дым даёт много самых мелких (0–0.5µm, низ графика), пыль — крупные (2.5–10µm, верх). По составу видно: горение это или просто пыль."
-    },
-    {
-      "id": 42,
-      "title": "Какие частицы: дым (мелко) ↔ пыль (крупно) — размер, µm",
-      "type": "timeseries",
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 8,
-        "x": 16,
-        "y": 58
-      },
-      "fieldConfig": {
-        "defaults": {
-          "unit": "µm",
-          "min": 0,
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "lineWidth": 2,
-            "lineInterpolation": "smooth",
-            "fillOpacity": 18,
-            "gradientMode": "scheme",
-            "spanNulls": 60000,
-            "showPoints": "never",
-            "thresholdsStyle": {
-              "mode": "dashed"
-            }
-          },
-          "max": 4,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "purple",
-                "value": null
-              },
-              {
-                "color": "blue",
-                "value": 0.5
-              },
-              {
-                "color": "yellow",
-                "value": 1
-              },
-              {
-                "color": "orange",
-                "value": 2.5
-              }
-            ]
-          }
-        }
-      },
-      "targets": [
-        {
-          "refId": "A",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_size\"}",
-          "legendFormat": "размер"
-        }
-      ],
-      "description": "дым ≤0.5 — сигареты, гарь, сажа\nдымка 0.5–1 — смог, выхлоп, дым костра\nпыль 1–2.5 — бытовая пыль, плесень\nкрупное >2.5 — пыльца, песок, шерсть\nВ чистом воздухе линия на нуле."
+      "description": "Счёт самых мелких частиц в воздухе. В чистом воздухе лежит ровно, резко взлетает при дыме/курении (сигарета, свеча, гарь). Это и есть детектор задымления."
     },
     {
       "type": "row",
       "title": "Связь платы",
       "collapsed": false,
       "gridPos": {
-        "h": 1,
-        "w": 24,
         "x": 0,
-        "y": 65
+        "y": 49,
+        "w": 24,
+        "h": 1
       },
       "id": 102
     },
@@ -1784,10 +1346,10 @@
         "uid": "prometheus"
       },
       "gridPos": {
-        "h": 5,
-        "w": 4,
         "x": 0,
-        "y": 66
+        "y": 50,
+        "w": 4,
+        "h": 5
       },
       "options": {
         "colorMode": "value",
@@ -1845,10 +1407,10 @@
         "uid": "prometheus"
       },
       "gridPos": {
-        "h": 5,
-        "w": 4,
         "x": 4,
-        "y": 66
+        "y": 50,
+        "w": 4,
+        "h": 5
       },
       "options": {
         "colorMode": "none",
@@ -1889,10 +1451,10 @@
         "uid": "prometheus"
       },
       "gridPos": {
-        "h": 5,
-        "w": 16,
         "x": 8,
-        "y": 66
+        "y": 50,
+        "w": 16,
+        "h": 5
       },
       "options": {
         "mergeValues": true,
@@ -1967,10 +1529,10 @@
         "uid": "prometheus"
       },
       "gridPos": {
-        "h": 7,
-        "w": 24,
         "x": 0,
-        "y": 71
+        "y": 55,
+        "w": 24,
+        "h": 7
       },
       "fieldConfig": {
         "defaults": {
