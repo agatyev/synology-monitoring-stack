@@ -95,7 +95,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "max(\n  (esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"} > bool 150)\n  or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"} > bool 9)\n  or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_10_0\"} > bool 54)\n)"
+          "expr": "max(\n  (esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"} > bool 220)\n  or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"} > bool 9)\n  or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_10_0\"} > bool 54)\n)"
         }
       ]
     },
@@ -132,7 +132,7 @@
           },
           "format": "table",
           "instant": true,
-          "expr": "sum by (name) ( (esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"} >= bool 0) * 150 or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"} >= bool 0) * 9 or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_10_0\"} >= bool 0) * 54 )"
+          "expr": "sum by (name) ( (esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"} >= bool 0) * 220 or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"} >= bool 0) * 9 or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_10_0\"} >= bool 0) * 54 )"
         },
         {
           "refId": "C",
@@ -142,7 +142,7 @@
           },
           "format": "table",
           "instant": true,
-          "expr": "sum by (name) ( (esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"} > bool 150) or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"} > bool 9) or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_10_0\"} > bool 54) )"
+          "expr": "sum by (name) ( (esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"} > bool 220) or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"} > bool 9) or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_10_0\"} > bool 54) )"
         }
       ],
       "transformations": [
@@ -264,8 +264,8 @@
                   {
                     "type": "value",
                     "options": {
-                      "150": {
-                        "text": "до 150"
+                      "220": {
+                        "text": "до 220"
                       },
                       "9": {
                         "text": "до 9"
@@ -415,7 +415,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"} > bool 150",
+          "expr": "esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"} > bool 220",
           "legendFormat": "Запахи и химия"
         },
         {
