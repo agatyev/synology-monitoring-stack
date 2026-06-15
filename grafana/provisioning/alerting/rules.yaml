@@ -1,0 +1,212 @@
+apiVersion: 1
+
+groups:
+  - orgId: 1
+    name: Погода
+    folder: Алерты
+    interval: 1h
+    rules:
+      - uid: weather-rain
+        title: "Давление падает — возможен дождь"
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 10800
+              to: 0
+            datasourceUid: prometheus
+            model:
+              datasource:
+                type: prometheus
+                uid: prometheus
+              expr: delta(esphome_sensor_value{name="bme680_pressure"}[3h])
+              instant: true
+              refId: A
+          - refId: B
+            datasourceUid: __expr__
+            model:
+              expression: A
+              refId: B
+              type: reduce
+              reducer: last
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              expression: B
+              refId: C
+              type: threshold
+              conditions:
+                - evaluator:
+                    params: [-3]
+                    type: lt
+                  operator:
+                    type: and
+                  query:
+                    params: [C]
+                  reducer:
+                    params: []
+                    type: last
+                  type: query
+        noDataState: NoData
+        execErrState: Error
+        for: 0s
+        annotations:
+          summary: "Давление упало более чем на 3 hPa за последние 3 часа. Ожидается ухудшение погоды."
+        labels:
+          severity: warning
+        isPaused: false
+
+      - uid: weather-storm
+        title: "Резкое падение давления — гроза/шторм"
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 10800
+              to: 0
+            datasourceUid: prometheus
+            model:
+              datasource:
+                type: prometheus
+                uid: prometheus
+              expr: delta(esphome_sensor_value{name="bme680_pressure"}[3h])
+              instant: true
+              refId: A
+          - refId: B
+            datasourceUid: __expr__
+            model:
+              expression: A
+              refId: B
+              type: reduce
+              reducer: last
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              expression: B
+              refId: C
+              type: threshold
+              conditions:
+                - evaluator:
+                    params: [-6]
+                    type: lt
+                  operator:
+                    type: and
+                  query:
+                    params: [C]
+                  reducer:
+                    params: []
+                    type: last
+                  type: query
+        noDataState: NoData
+        execErrState: Error
+        for: 0s
+        annotations:
+          summary: "Давление упало более чем на 6 hPa за 3 часа. Вероятна гроза или резкое ухудшение."
+        labels:
+          severity: critical
+        isPaused: false
+
+  - orgId: 1
+    name: Воздух
+    folder: Алерты
+    interval: 10m
+    rules:
+      - uid: air-tvoc-high
+        title: "TVOC превышен"
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: prometheus
+            model:
+              datasource:
+                type: prometheus
+                uid: prometheus
+              expr: esphome_sensor_value{name="ccs811_tvoc"}
+              instant: true
+              refId: A
+          - refId: B
+            datasourceUid: __expr__
+            model:
+              expression: A
+              refId: B
+              type: reduce
+              reducer: last
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              expression: B
+              refId: C
+              type: threshold
+              conditions:
+                - evaluator:
+                    params: [660]
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params: [C]
+                  reducer:
+                    params: []
+                    type: last
+                  type: query
+        noDataState: NoData
+        execErrState: Error
+        for: 10m
+        annotations:
+          summary: "TVOC превышает 660 ppb — проветри помещение."
+        labels:
+          severity: warning
+        isPaused: false
+
+      - uid: air-pm25-high
+        title: "PM2.5 превышен"
+        condition: C
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: prometheus
+            model:
+              datasource:
+                type: prometheus
+                uid: prometheus
+              expr: esphome_sensor_value{name="sps30_pm_2_5"}
+              instant: true
+              refId: A
+          - refId: B
+            datasourceUid: __expr__
+            model:
+              expression: A
+              refId: B
+              type: reduce
+              reducer: last
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              expression: B
+              refId: C
+              type: threshold
+              conditions:
+                - evaluator:
+                    params: [35]
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params: [C]
+                  reducer:
+                    params: []
+                    type: last
+                  type: query
+        noDataState: NoData
+        execErrState: Error
+        for: 10m
+        annotations:
+          summary: "PM2.5 превышает 35 мкг/м³ — плохое качество воздуха."
+        labels:
+          severity: warning
+        isPaused: false
