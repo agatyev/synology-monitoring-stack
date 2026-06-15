@@ -32,7 +32,6 @@ services:
       - "--storage.tsdb.path=/prometheus"
       - "--storage.tsdb.retention.time=${PROMETHEUS_RETENTION:-180d}"
       - "--web.enable-lifecycle"
-      - "--query.active-query-tracker-path=/prometheus/active-query-tracker"
     volumes:
       - ./prometheus:/etc/prometheus:ro
       - ${VOLUME_BASE:-./data}/prometheus:/prometheus
