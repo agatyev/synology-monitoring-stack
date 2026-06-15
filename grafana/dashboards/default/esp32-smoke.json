@@ -21,7 +21,7 @@
   "timezone": "browser",
   "title": "ESP32 Smoke — Air Quality",
   "uid": "esp32-smoke",
-  "version": 23,
+  "version": 24,
   "panels": [
     {
       "id": 50,
@@ -49,7 +49,7 @@
                   "index": 0
                 },
                 "1": {
-                  "text": "ОК",
+                  "text": "ПРЕВЫШЕНО",
                   "color": "red",
                   "index": 1
                 }
@@ -132,7 +132,7 @@
           },
           "format": "table",
           "instant": true,
-          "expr": "sum by (name) ( (esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"} >= 0) * 150 or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"} >= 0) * 9 or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_10_0\"} >= 0) * 54 )"
+          "expr": "sum by (name) ( (esphome_sensor_value{job=\"esp32-smoke\", name=\"ccs811_tvoc\"} >= bool 0) * 150 or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_2_5\"} >= bool 0) * 9 or (esphome_sensor_value{job=\"esp32-smoke\", name=\"sps30_pm_10_0\"} >= bool 0) * 54 )"
         },
         {
           "refId": "C",
