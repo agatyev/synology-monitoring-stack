@@ -3,7 +3,7 @@ apiVersion: 1
 groups:
   - orgId: 1
     name: Погода
-    folder: Алерты
+    folder: NAS Monitoring
     interval: 1h
     rules:
       - uid: weather-rain
@@ -108,7 +108,7 @@ groups:
 
   - orgId: 1
     name: Воздух
-    folder: Алерты
+    folder: NAS Monitoring
     interval: 10m
     rules:
       - uid: air-tvoc-high
