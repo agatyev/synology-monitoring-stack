@@ -109,7 +109,7 @@ groups:
   - orgId: 1
     name: Воздух
     folder: NAS Monitoring
-    interval: 10m
+    interval: 1m
     rules:
       - uid: air-tvoc-high
         title: "TVOC превышен"
@@ -192,7 +192,7 @@ groups:
               type: threshold
               conditions:
                 - evaluator:
-                    params: [9]
+                    params: [-1]
                     type: gt
                   operator:
                     type: and
@@ -204,7 +204,7 @@ groups:
                   type: query
         noDataState: NoData
         execErrState: Error
-        for: 10m
+        for: 0s
         annotations:
           summary: "PM2.5 превышает 9 мкг/м³ — плохое качество воздуха."
         labels:
