@@ -192,7 +192,7 @@ groups:
               type: threshold
               conditions:
                 - evaluator:
-                    params: [35]
+                    params: [9]
                     type: gt
                   operator:
                     type: and
@@ -206,7 +206,7 @@ groups:
         execErrState: Error
         for: 10m
         annotations:
-          summary: "PM2.5 превышает 35 мкг/м³ — плохое качество воздуха."
+          summary: "PM2.5 превышает 9 мкг/м³ — плохое качество воздуха."
         labels:
           severity: warning
         isPaused: false
