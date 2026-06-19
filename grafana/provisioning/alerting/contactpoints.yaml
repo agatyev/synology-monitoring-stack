@@ -10,6 +10,8 @@ contactPoints:
           bottoken: "${TELEGRAM_BOT_TOKEN}"
           chatid: "1889475594"
           message: |
-            {{ range .Alerts }}🚨 {{ .Labels.alertname }}
-            {{ .Annotations.summary }}
-            {{ end }}
+            {{ if .Alerts.Firing }}🚨 ТРЕВОГА
+            {{ range .Alerts.Firing }}{{ .Annotations.summary }}
+            {{ end }}{{ end }}{{ if .Alerts.Resolved }}✅ НОРМА
+            {{ range .Alerts.Resolved }}{{ .Annotations.summary }}
+            {{ end }}{{ end }}
