@@ -51,7 +51,7 @@ groups:
         execErrState: Error
         for: 0s
         annotations:
-          summary: "Давление упало более чем на 3 hPa за последние 3 часа. Ожидается ухудшение погоды."
+          summary: "Давление {{ printf \"%.1f\" $values.B.Value }} hPa за 3ч · порог ≤−3 · возможен дождь"
         labels:
           severity: warning
         isPaused: false
@@ -101,7 +101,7 @@ groups:
         execErrState: Error
         for: 0s
         annotations:
-          summary: "Давление упало более чем на 6 hPa за 3 часа. Вероятна гроза или резкое ухудшение."
+          summary: "Давление {{ printf \"%.1f\" $values.B.Value }} hPa за 3ч · порог ≤−6 · гроза/шторм"
         labels:
           severity: critical
         isPaused: false
@@ -109,7 +109,7 @@ groups:
   - orgId: 1
     name: Воздух
     folder: NAS Monitoring
-    interval: 1m
+    interval: 10m
     rules:
       - uid: air-tvoc-high
         title: "TVOC превышен"
@@ -156,7 +156,7 @@ groups:
         execErrState: Error
         for: 10m
         annotations:
-          summary: "TVOC превышает 660 ppb — проветри помещение."
+          summary: "TVOC {{ printf \"%.0f\" $values.B.Value }} ppb · норма ≤660 · проветри"
         labels:
           severity: warning
         isPaused: false
@@ -192,7 +192,7 @@ groups:
               type: threshold
               conditions:
                 - evaluator:
-                    params: [-1]
+                    params: [9]
                     type: gt
                   operator:
                     type: and
@@ -204,9 +204,9 @@ groups:
                   type: query
         noDataState: NoData
         execErrState: Error
-        for: 0s
+        for: 10m
         annotations:
-          summary: "PM2.5 превышает 9 мкг/м³ — плохое качество воздуха."
+          summary: "PM2.5 {{ printf \"%.0f\" $values.B.Value }} мкг/м³ · норма ≤9"
         labels:
           severity: warning
         isPaused: false
