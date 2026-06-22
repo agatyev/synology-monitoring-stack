@@ -7,8 +7,8 @@ groups:
     interval: 1h
     rules:
       - uid: weather-rain
-        title: "Давление падает — возможен дождь"
-        condition: C
+        title: "Возможен дождь — давление падает + влажность высокая"
+        condition: E
         data:
           - refId: A
             relativeTimeRange:
@@ -23,35 +23,42 @@ groups:
               instant: true
               refId: A
           - refId: B
-            datasourceUid: __expr__
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: prometheus
             model:
-              expression: A
+              datasource:
+                type: prometheus
+                uid: prometheus
+              expr: esphome_sensor_value{name="bme680_humidity"}
+              instant: true
               refId: B
-              type: reduce
-              reducer: last
           - refId: C
             datasourceUid: __expr__
             model:
-              expression: B
+              expression: A
               refId: C
-              type: threshold
-              conditions:
-                - evaluator:
-                    params: [-3]
-                    type: lt
-                  operator:
-                    type: and
-                  query:
-                    params: [C]
-                  reducer:
-                    params: []
-                    type: last
-                  type: query
+              type: reduce
+              reducer: last
+          - refId: D
+            datasourceUid: __expr__
+            model:
+              expression: B
+              refId: D
+              type: reduce
+              reducer: last
+          - refId: E
+            datasourceUid: __expr__
+            model:
+              expression: "(${C} < -1.5) && (${D} > 60)"
+              refId: E
+              type: math
         noDataState: NoData
         execErrState: Error
         for: 0s
         annotations:
-          summary: "Давление {{ printf \"%.1f\" $values.B.Value }} hPa за 3ч · порог ≤−3 · возможен дождь"
+          summary: "Дождь вероятен · давление {{ printf \"%.1f\" $values.C.Value }} hPa/3ч, влажность {{ printf \"%.0f\" $values.D.Value }}%"
         labels:
           severity: warning
         isPaused: false
